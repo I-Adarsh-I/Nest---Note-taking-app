@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import { Toaster } from "sonner"
+
 import { Geist, Geist_Mono, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
+
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ConvexClientProvider } from "@/components/providers/convex-provider";
+import { ReduxProvider } from "@/components/providers/redux-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -53,6 +57,7 @@ export default function RootLayout({
       <body
         className={`${roboto.className} antialiased`}
       >
+        <ReduxProvider>
         <ConvexClientProvider>
         <ThemeProvider
             attribute="class"
@@ -61,9 +66,11 @@ export default function RootLayout({
             disableTransitionOnChange
             storageKey="nest-theme"
           >
+            <Toaster position="top-right" />
         {children}
         </ThemeProvider>
         </ConvexClientProvider>
+        </ReduxProvider>
       </body>
     </html>
   );
