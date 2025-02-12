@@ -30,6 +30,7 @@ import { api } from "../../../../../convex/_generated/api";
 import { DocumentList } from "../DocumentList/DocumentList";
 import TrashCan from "../TrashCan/TrashCan";
 import { useSearch } from "@/hooks/use-search";
+import Navbar from "../NoteNavbar/Navbar";
 
 const AppSidebar = () => {
   const search = useSearch();
@@ -279,9 +280,8 @@ const AppSidebar = () => {
         )}
       >
         {!!params.documentId ? (
-          // <Navbar isCollapsed={isCollapsed} onResetWidth={resetWidth} />
           <>
-            <p>Navbar</p>
+            <Navbar isCollapsed={isCollapsed} onResetWidth={() => resetWidth()}/>
           </>
         ) : (
           <nav className="bg-transparent px-3 py-2 w-full">

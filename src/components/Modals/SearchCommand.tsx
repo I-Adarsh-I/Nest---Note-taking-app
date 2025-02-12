@@ -31,11 +31,9 @@ export const SearchCommand = () => {
     setIsMounted(true);
   }, []);
 
-  console.log("logging currently open state", isOpen);
-
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || e.key === "/") {
         e.preventDefault();
         toggle();
       }
