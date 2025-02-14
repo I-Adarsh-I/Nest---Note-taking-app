@@ -1,6 +1,6 @@
 "use client"
 
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 
 import { api } from "../../../../../../convex/_generated/api";
 import { Id } from "../../../../../../convex/_generated/dataModel";
@@ -8,6 +8,8 @@ import Toolbar from "@/components/toolbar";
 import { useParams } from "next/navigation";
 import CoverImage from "@/components/cover-image";
 import { Skeleton } from "@/components/ui/skeleton";
+import Editor from "@/components/editor";
+import { Room } from "@/app/Room";
 
 const DocumentIdPage = () => {
 
@@ -17,6 +19,14 @@ const DocumentIdPage = () => {
     const document = useQuery(api.documents.getDocumentById, {
         documentId
     })
+
+    const updateNote = useMutation(api.documents.update);
+    const onChangeNoteContent = async (content: string) => {
+      await updateNote({
+        id: documentId,
+        content
+      })
+    }
 
     if (document === undefined) {
         return (
@@ -38,7 +48,10 @@ const DocumentIdPage = () => {
             <CoverImage url={document.coverImage}/>
             <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
                 <Toolbar initialData={document}/>
-                Document Id page
+                <Editor
+                  onChange={onChangeNoteContent}
+                  initialContent={document.content}
+                  />
             </div>
         </div>
      );

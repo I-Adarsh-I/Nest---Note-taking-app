@@ -92,3 +92,13 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+
+.bn-editor {
+  outline: none;
+  padding-inline: 0px !important;
+  padding-inline-start: 54px;
+  padding-inline-end: 54px;
+  --N800: #172b4d;
+  --N40: #dfe1e6;
+}

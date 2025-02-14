@@ -9,11 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@blocknote/core": "^0.23.6",
+    "@blocknote/mantine": "^0.23.6",
+    "@blocknote/react": "^0.23.6",
     "@clerk/clerk-react": "^5.22.11",
     "@clerk/nextjs": "^6.11.1",
     "@edgestore/react": "^0.2.2",
     "@edgestore/server": "^0.2.2",
     "@liveblocks/client": "^2.18.0",
+    "@liveblocks/node": "^2.18.0",
     "@liveblocks/react": "^2.18.0",
     "@liveblocks/react-tiptap": "^2.18.0",
     "@liveblocks/react-ui": "^2.18.0",
