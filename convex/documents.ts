@@ -313,11 +313,17 @@ export const update = mutation({
     const existingDocument = await ctx.db.get(args.id);
 
     if (!existingDocument) {
-      throw new Error("Not found");
+      throw new ConvexError({
+        message: "No documents found",
+        code: 404,
+      });
     }
 
     if (existingDocument.userId !== userId) {
-      throw new Error("Unauthorized");
+      throw new ConvexError({
+        message: "User not authorized",
+        code: 400
+      });
     }
 
     const document = await ctx.db.patch(args.id, { ...rest });
@@ -325,3 +331,60 @@ export const update = mutation({
     return document;
   },
 })
+
+export const removeIcon = mutation({
+  args: {documentId: v.id("documents")},
+  handler: async(ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError({
+        message: "User not authenticated",
+        code: 400,
+      });
+    }
+
+    const userId = identity.subject;
+    const existingDocument = await ctx.db.get(args.documentId);
+
+    if (!existingDocument) {
+      throw new Error("Not found");
+    }
+
+    if (existingDocument.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const document = await ctx.db.patch(args.documentId, { icon: undefined });
+
+    return document;
+
+  }
+})
+
+export const removeCoverImage = mutation({
+  args: { id: v.id("documents") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+    const existingDocument = await ctx.db.get(args.id);
+
+    if (!existingDocument) {
+      throw new Error("Not found");
+    }
+
+    if (existingDocument.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const document = await ctx.db.patch(args.id, { coverImage: undefined });
+
+    return document;
+  },
+});

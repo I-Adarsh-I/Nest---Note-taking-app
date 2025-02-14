@@ -40,7 +40,7 @@ const Title = ({ initialData }: TitleProps) => {
   };
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" || event.key === "Escape") {
       disableInput();
     }
   };
@@ -67,7 +67,7 @@ const Title = ({ initialData }: TitleProps) => {
               size={"lg"}
               className="font-normal h-auto p-1"
             >
-              <span className="truncate">{initialData.title}</span>
+              <span className="truncate text-base max-w-80">{initialData.title}</span>
             </Button>
           </>
         )}
