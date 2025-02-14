@@ -34,6 +34,7 @@
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
     "@uidotdev/usehooks": "^2.4.1",
+    "@y-sweet/react": "^0.8.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
