@@ -94,7 +94,7 @@ const Item = ({
       if (!isExpanded) {
         onExpand?.();
       }
-      // router.push(`documents/${documentId}`)
+      router.push(`/documents/${documentId}`)
     });
     toast.promise(newNoteCreated, {
       loading: "Creating a new note",

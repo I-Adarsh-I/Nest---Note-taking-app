@@ -11,7 +11,7 @@ import { useMemo } from "react";
 import { useParams } from "next/navigation";
 
 const DocumentIdPage = () => {
-    const params = useParams();
+  const params = useParams();
 
   const Editor = useMemo(
     () => dynamic(() => import("@/components/editor"), { ssr: false }),
@@ -51,7 +51,7 @@ const DocumentIdPage = () => {
   return (
     <div className="pb-40">
       <CoverImage preview url={document.coverImage} />
-      <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
+      <div className="md:max-w-3xl lg:max-w-4xl mx-auto h-full">
         <Toolbar preview initialData={document} />
         <Editor
           editable={false}

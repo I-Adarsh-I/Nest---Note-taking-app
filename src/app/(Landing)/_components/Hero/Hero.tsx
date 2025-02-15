@@ -20,7 +20,7 @@ const Hero = () => {
             all in one place
           </h3>
           <p className="text-center text-zinc-900 dark:text-white/95 mt-2 sm:mt-3 md:mt-4 lg:mt-5 text-base md:text-lg">
-            Your thoughts organised effortlessly
+          Capture thoughts or detailed notes
           </p>
           <div className="w-full flex items-center justify-center">
             {isLoading ? (

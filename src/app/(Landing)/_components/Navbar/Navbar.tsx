@@ -10,6 +10,7 @@ import { useConvexAuth } from "convex/react";
 import { SignInButton, UserButton } from "@clerk/clerk-react";
 import { Spinner } from "@/components/loader";
 import Link from "next/link";
+import Image from "next/image";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -35,8 +36,23 @@ const Navbar = () => {
               font.className
             )}
           >
-            <span>i</span>
-            <p className="hidden md:block text-center">Nest</p>
+            <div className="hidden md:flex items-center gap-x-2">
+              <Image
+                src="/nest-icon-black.svg"
+                height={40}
+                width={40}
+                alt="Logo"
+                className="dark:hidden"
+              />
+              <Image
+                src="/nest-icon-white.svg"
+                height={40}
+                width={40}
+                alt="Logo"
+                className="hidden dark:block"
+              />
+              <p className={cn("font-semibold", font.className)}>Nest</p>
+            </div>
           </div>
           <div className="flex gap-3 items-center">
             {isLoading && (

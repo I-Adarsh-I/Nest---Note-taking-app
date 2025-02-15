@@ -11,7 +11,6 @@ import { cn } from "@/lib/utils";
 import {
   ChevronsLeft,
   MenuIcon,
-  PanelLeftClose,
   Plus,
   PlusCircle,
   Search,
@@ -24,12 +23,14 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 
+import { useSearch } from "@/hooks/use-search";
+
+import { api } from "../../../../../convex/_generated/api";
+
 import Item from "../Item/Item";
 import UserOptions from "../UserSettings/UserOptions";
-import { api } from "../../../../../convex/_generated/api";
 import { DocumentList } from "../DocumentList/DocumentList";
 import TrashCan from "../TrashCan/TrashCan";
-import { useSearch } from "@/hooks/use-search";
 import Navbar from "../NoteNavbar/Navbar";
 
 const AppSidebar = () => {
@@ -142,81 +143,6 @@ const AppSidebar = () => {
   };
 
   return (
-    // <>
-    //   <aside
-    //     ref={sidebarRef}
-    //     className={cn(
-    //       "group/sidebar h-full bg-secondary overflow-y-auto relative flex flex-col w-60 z-[99999]",
-    //       isResetting && "transition-all ease-in-out duration-300",
-    //       isSmallDevice && "w-0"
-    //     )}
-    //   >
-    //     <div
-    //       role="button"
-    //       className={cn(
-    //         "h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-2 opacity-0 group-hover/sidebar:opacity-100 transition",
-    //         isSmallDevice && "opacity-100"
-    //       )}
-    //     >
-    //       <PanelLeftClose onClick={collapseSidbar} className="h-6 w-6" />
-    //     </div>
-    //     <div>
-    //       <UserOptions />
-    //       <Item
-    //         // onClick={() => search.onOpen()}
-    //         label="Search"
-    //         icon={Search}
-    //         isSearch
-    //       />
-    //       <Item onClick={() => {}} label="Settings" icon={Settings} />
-    //       <Item
-    //         onClick={() => handleCreateNewNote()}
-    //         label="New page"
-    //         icon={PlusCircle}
-    //       />
-    //     </div>
-    //     <div className="mt-4">
-    //       <DocumentList />
-    //       <Item
-    //         onClick={() => handleCreateNewNote()}
-    //         label="Add a page"
-    //         icon={Plus}
-    //       />
-    //       <Popover>
-    //         <PopoverTrigger className="w-full mt-4">
-    //           <Item label="Trash" icon={Trash} />
-    //         </PopoverTrigger>
-    //         <PopoverContent
-    //           side={isSmallDevice ? "bottom" : "right"}
-    //           className="p-0 w-72"
-    //         >
-    //           {/* <p>Trash box</p> */}
-    //           <TrashCan />
-    //         </PopoverContent>
-    //       </Popover>
-    //     </div>
-    //     <div
-    //       onClick={resetWidth}
-    //       onMouseDown={handleMouseDown}
-    //       className="opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0"
-    //     />
-    //   </aside>
-    //   <div
-    //     ref={navbarRef}
-    //     className={cn(
-    //       "absolute top-0 z-[99999] left-60 w-[calc(100%-240px)]",
-    //       isResetting && "transition ease-in-out duration-300",
-    //       isSmallDevice && "left-0 w-full"
-    //     )}
-    //   >
-    //     <nav className="bg-transparent px-3 py-2 w-full">
-    //       {isCollapsed && (
-    //         <MenuIcon onClick={resetWidth} role="button" className="h-6 w-6" />
-    //       )}
-    //     </nav>
-    //   </div>
-    // </>
-    
     <>
       <aside
         ref={sidebarRef}

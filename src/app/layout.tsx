@@ -37,13 +37,13 @@ export const metadata: Metadata = {
     icon: [
       {
         media: "(prefers-color-scheme: light)",
-        url: "/logo.svg",
-        href: "/logo.svg",
+        url: "/nest-icon-black.svg",
+        href: "/nest-icon-black.svg",
       },
       {
         media: "(prefers-color-scheme: dark)",
-        url: "/logo-dark.svg",
-        href: "/logo-dark.svg",
+        url: "/nest-icon-white.svg",
+        href: "/nest-icon-white.svg",
       },
     ],
   },
