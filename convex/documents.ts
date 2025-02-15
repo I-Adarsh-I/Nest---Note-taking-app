@@ -268,6 +268,7 @@ export const getDocumentById = query({
     const document = await ctx.db.get(args.documentId);
 
     if(!document){
+      // console.log("Document", document)
       throw new ConvexError({
         message: "No documents found",
         code: 404,

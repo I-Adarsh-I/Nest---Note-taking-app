@@ -37,17 +37,14 @@ const Banner = ({ variant = "info", icon: Icon, documentId }: BannerProps) => {
   const deleteNote = useMutation(api.documents.deleteNote);
   const restoreNote = useMutation(api.documents.restoreNotes);
 
-  const deleteNotes = (documentId: Id<"documents">) => {
-    const deleteNotes = deleteNote({ id: documentId });
-    toast.promise(deleteNotes, {
+  const deleteNotes = async (documentId: Id<"documents">) => {
+    const promise = deleteNote({ id: documentId });
+    toast.promise(promise, {
       loading: "Deleting note...",
-      success: "Note deleted",
-      error: "Failed to delete note",
+      success: "Note deleted!",
+      error: "Failed to delete note.",
     });
-
-    if (params.documentId === documentId) {
-      router.push("/documents");
-    }
+    router.push("/documents");
   };
 
   const restoreNotes = (
@@ -90,17 +87,15 @@ const Banner = ({ variant = "info", icon: Icon, documentId }: BannerProps) => {
                 </Button>
               )}
               {deleteNotes && (
-                <ConfirmationalModel
-                onConfirm={() => deleteNotes(documentId)}
-              >
-                <Button
-                  variant={"link"}
-                  size={"sm"}
-                //   onClick={() => deleteNotes(documentId)}
-                  className="text-gray-800 hover:text-black"
-                >
-                  Delete Forever
-                </Button>
+                <ConfirmationalModel onConfirm={() => deleteNotes(documentId)}>
+                  <Button
+                    variant={"link"}
+                    size={"sm"}
+                    //   onClick={() => deleteNotes(documentId)}
+                    className="text-gray-800 hover:text-black"
+                  >
+                    Delete Forever
+                  </Button>
                 </ConfirmationalModel>
               )}
             </div>

@@ -90,15 +90,14 @@ const Toolbar = ({ initialData, preview }: ToolbarProps) => {
       <div className="opacity-0 group-hover:opacity-100 flex items-center gap-x-1 py-4">
         {!initialData.icon && !preview && (
           <IconPicker asChild onChange={iconSelectHandler}>
-            <Button
-              className="text-muted-foreground text-xs"
-              variant="outline"
-              size="sm"
-            >
+          <span>
+            <Button className="text-muted-foreground text-xs" variant="outline" size="sm" >
+            {/* variant="outline" size="sm" */}
               <Smile className="h-4 w-4 mr-2" />
               Add icon
             </Button>
-          </IconPicker>
+          </span>
+        </IconPicker>
         )}
         {!initialData.coverImage && !preview && (
           <Button

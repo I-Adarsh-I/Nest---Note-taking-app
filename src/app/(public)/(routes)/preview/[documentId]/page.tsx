@@ -1,42 +1,32 @@
 "use client";
 
-import { useMutation, useQuery } from "convex/react";
-
+import CoverImage from "@/components/cover-image";
+import Toolbar from "@/components/toolbar";
+import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "../../../../../../convex/_generated/api";
 import { Id } from "../../../../../../convex/_generated/dataModel";
-import Toolbar from "@/components/toolbar";
-import { useParams, useRouter } from "next/navigation";
-import CoverImage from "@/components/cover-image";
-import { Skeleton } from "@/components/ui/skeleton";
-// import Editor from "@/components/editor";
+import { useMutation, useQuery } from "convex/react";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
+import { useParams } from "next/navigation";
 
 const DocumentIdPage = () => {
+    const params = useParams();
+
   const Editor = useMemo(
     () => dynamic(() => import("@/components/editor"), { ssr: false }),
     []
   );
 
-  const params = useParams();
-  const documentId = params?.documentId as Id<"documents">;
-
   const document = useQuery(api.documents.getDocumentById, {
-    documentId,
+    documentId: params.documentId as Id<"documents">,
   });
 
-  const updateNote = useMutation(api.documents.update);
+  const update = useMutation(api.documents.update);
 
-  const onChangeNoteContent = async (content: string) => {
-    updateNote({
-      id: documentId,
-      content,
-    });
+  const onChange = (content: string) => {
+    update({ id: params.documentId as Id<"documents">, content: content });
   };
-
-  if (document === null) {
-    return <div>Not found</div>;
-  }
 
   if (document === undefined) {
     return (
@@ -54,13 +44,18 @@ const DocumentIdPage = () => {
     );
   }
 
+  if (document === null) {
+    return <div>Not found</div>;
+  }
+
   return (
     <div className="pb-40">
-      <CoverImage url={document.coverImage} />
+      <CoverImage preview url={document.coverImage} />
       <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
-        <Toolbar initialData={document} />
+        <Toolbar preview initialData={document} />
         <Editor
-          onChange={onChangeNoteContent}
+          editable={false}
+          onChange={onChange}
           initialContent={document.content}
         />
       </div>

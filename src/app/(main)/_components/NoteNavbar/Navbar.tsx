@@ -1,6 +1,6 @@
 import { useQuery } from "convex/react";
 import { PanelLeft, TriangleAlert } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { api } from "../../../../../convex/_generated/api";
@@ -8,6 +8,7 @@ import { Id } from "../../../../../convex/_generated/dataModel";
 import Options from "../NoteOptions/Options";
 import Title from "../NoteTitle/Title";
 import Banner from "../TopBanner/Banner";
+import { Publish } from "../Publish/Publish";
 
 interface NavbarProps {
   isCollapsed: boolean;
@@ -16,6 +17,7 @@ interface NavbarProps {
 
 const Navbar = ({ isCollapsed, onResetWidth }: NavbarProps) => {
   const params = useParams();
+  const router = useRouter();
 
   const document = useQuery(api.documents.getDocumentById, {
     documentId: params.documentId as Id<"documents">,
@@ -33,6 +35,7 @@ const Navbar = ({ isCollapsed, onResetWidth }: NavbarProps) => {
   }
 
   if (document === null) {
+    router.push("/documents")
     return null;
   }
   return (
@@ -49,8 +52,9 @@ const Navbar = ({ isCollapsed, onResetWidth }: NavbarProps) => {
           <Title initialData={document} />
         </div>
         <div className="flex items-center gap-2">
-          <Button variant={"ghost"}>Publish</Button>
-          <div role="button" className="">
+          {/* <Button variant={"ghost"}>Publish</Button> */}
+          <Publish initialData={document}/>
+          <div role="button" className="mt-1">
             <Options documentId={document._id} />
           </div>
         </div>

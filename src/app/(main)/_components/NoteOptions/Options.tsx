@@ -59,7 +59,7 @@ const Options = ({ documentId }: OptionsProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Ellipsis className="h-4 w-4" />
+        <Ellipsis className="h-5 w-5" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem onClick={(e) => onArhive(e)}>

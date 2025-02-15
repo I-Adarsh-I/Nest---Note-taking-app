@@ -21,7 +21,7 @@ import ConfirmationalModel from "../../../../components/Modals/ConfirmationModal
 const TrashCan = () => {
   const router = useRouter();
   const params = useParams();
-  const documents = useQuery(api.documents.getTrash);
+  const documents = useQuery(api.documents.getTrash) ?? [];
   const deleteNote = useMutation(api.documents.deleteNote);
   const restoreNote = useMutation(api.documents.restoreNotes);
 
@@ -48,12 +48,13 @@ const TrashCan = () => {
     });
   };
 
-  const deleteNotes = (documentId: Id<"documents">) => {
-    const deleteNotes = deleteNote({ id: documentId });
-    toast.promise(deleteNotes, {
+  const deleteNotes = async (documentId: Id<"documents">) => {
+    const promise = deleteNote({ id: documentId });
+
+    toast.promise(promise, {
       loading: "Deleting note...",
-      success: "Note deleted",
-      error: "Failed to delete note",
+      success: "Note deleted!",
+      error: "Failed to delete note.",
     });
 
     if (params.documentId === documentId) {
@@ -99,6 +100,7 @@ const TrashCan = () => {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
+                      <span>
                       <div
                         role="button"
                         onClick={(e) => restoreNotes(e, document._id)}
@@ -106,6 +108,7 @@ const TrashCan = () => {
                       >
                         <Undo className="h-4 w-4 text-muted-foreground" />
                       </div>
+                      </span>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Undo</p>

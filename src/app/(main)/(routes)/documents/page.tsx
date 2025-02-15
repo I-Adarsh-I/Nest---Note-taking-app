@@ -11,7 +11,7 @@ import { ConvexError } from "convex/values";
 
 const DocumentPage = () => {
   const { user } = useUser();
-  console.log({ user });
+  // console.log({ user });
 
   const create = useMutation(api.documents.create);
 
