@@ -72,7 +72,7 @@ export const DocumentList = ({
       </p>
       <div className="max-h-[100px] overflow-auto">
       {documents.map((document) => (
-        <p key={document._id}>
+        <div key={document._id}>
           <Item
             id={document._id}
             onClick={() => onRedirect(document._id)}
@@ -87,7 +87,7 @@ export const DocumentList = ({
           {expanded[document._id] && (
             <DocumentList parentDocumentId={document._id} level={level + 1} />
           )}
-        </p>
+        </div>
       ))}
       </div>
     </>
