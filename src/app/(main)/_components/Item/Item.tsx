@@ -26,7 +26,6 @@ import { cn } from "@/lib/utils";
 
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { api } from "../../../../../convex/_generated/api";
-import { SearchCommand } from "@/components/Modals/SearchCommand";
 import React, { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 
@@ -205,7 +204,6 @@ const Item = ({
           <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[14px] font-medium text-muted-foreground opacity-100 text-center">
             <span className="text-[11px] mt-[1px]">⌘</span>K
           </kbd>
-          <SearchCommand />
         </>
       )}
       {!!id && (
