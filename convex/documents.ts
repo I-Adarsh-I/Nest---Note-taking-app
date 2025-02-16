@@ -245,7 +245,7 @@ export const getSearch = query({
     }
     const userId = identity.subject;
 
-    const documents = ctx.db
+    const documents = await ctx.db
       .query("documents")
       .withIndex("by_user", (q) => q.eq("userId", userId))
       .filter((q) => q.eq(q.field("isArchived"), false))
