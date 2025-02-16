@@ -29,7 +29,7 @@ const Options = ({ documentId }: OptionsProps) => {
     event.stopPropagation();
 
     if (!documentId) return;
-    const notesArchived = archiveNote({ id: documentId });
+    archiveNote({ id: documentId });
 
     toast("Note moved to trash", {
       action: {
