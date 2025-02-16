@@ -2,7 +2,6 @@ import { useQuery } from "convex/react";
 import { PanelLeft, TriangleAlert } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import Options from "../NoteOptions/Options";

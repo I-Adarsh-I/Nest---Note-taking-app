@@ -29,7 +29,6 @@ import { api } from "../../../../../convex/_generated/api";
 import { SearchCommand } from "@/components/Modals/SearchCommand";
 import React, { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
-import Title from "../NoteTitle/Title";
 
 interface ItemProps {
   id?: Id<"documents">;
@@ -74,7 +73,7 @@ const Item = ({
     event.stopPropagation();
 
     if (!id) return;
-    const notesArchived = archiveNote({ id });
+    archiveNote({ id });
 
     toast("Note moved to trash", {
       action: {

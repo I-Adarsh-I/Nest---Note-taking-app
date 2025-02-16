@@ -48,7 +48,7 @@ export default function Editor({
       editor={editor}
       theme={resolvedTheme === "dark" ? "dark" : "light"}
       onChange={() => {
-        setBlocks((prevBlocks) => {
+        setBlocks(() => {
           const updatedBlocks = editor.document;
           onChange(JSON.stringify(updatedBlocks));
           return updatedBlocks;

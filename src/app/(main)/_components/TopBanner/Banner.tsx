@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { cva } from "class-variance-authority";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import { LucideIcon } from "lucide-react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { toast } from "sonner";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import ConfirmationalModel from "@/components/Modals/ConfirmationModal";
 
 interface BannerProps {
@@ -31,7 +31,6 @@ const bannerVariants = cva(
 );
 
 const Banner = ({ variant = "info", icon: Icon, documentId }: BannerProps) => {
-  const params = useParams();
   const router = useRouter();
 
   const deleteNote = useMutation(api.documents.deleteNote);

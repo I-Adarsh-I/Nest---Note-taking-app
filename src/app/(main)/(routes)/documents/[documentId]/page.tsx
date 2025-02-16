@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../../../convex/_generated/api";
 import { Id } from "../../../../../../convex/_generated/dataModel";
 import Toolbar from "@/components/toolbar";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import CoverImage from "@/components/cover-image";
 import { Skeleton } from "@/components/ui/skeleton";
 // import Editor from "@/components/editor";

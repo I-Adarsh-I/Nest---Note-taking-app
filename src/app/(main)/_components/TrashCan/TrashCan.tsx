@@ -3,7 +3,7 @@
 import { useMutation, useQuery } from "convex/react";
 import { useParams, useRouter } from "next/navigation";
 import { api } from "../../../../../convex/_generated/api";
-import { Search, Trash, Undo, Undo2, Undo2Icon, UndoDot } from "lucide-react";
+import { Search, Trash, Undo } from "lucide-react";
 import { useState } from "react";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { toast } from "sonner";
@@ -15,7 +15,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
 import ConfirmationalModel from "../../../../components/Modals/ConfirmationModal";
 
 const TrashCan = () => {

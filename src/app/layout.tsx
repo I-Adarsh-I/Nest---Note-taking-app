@@ -1,29 +1,13 @@
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
 
-import { Geist, Geist_Mono, Poppins, Roboto } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ConvexClientProvider } from "@/components/providers/convex-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
 import { EdgeStoreProvider } from "@/lib/edgestore";
-import { useIsMobile } from "@/hooks/use-mobile";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "600"],
-});
 
 const roboto = Roboto({
   subsets: ["latin"],

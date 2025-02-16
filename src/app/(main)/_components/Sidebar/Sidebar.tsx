@@ -32,7 +32,6 @@ import UserOptions from "../UserSettings/UserOptions";
 import { DocumentList } from "../DocumentList/DocumentList";
 import TrashCan from "../TrashCan/TrashCan";
 import Navbar from "../NoteNavbar/Navbar";
-import { Logo } from "@/components/logo";
 import Appearance from "../AppearanceSettings/Appearance";
 
 const AppSidebar = () => {
@@ -178,8 +177,8 @@ const AppSidebar = () => {
           />
           <Item label="Settings" icon={Settings} onClick={() =>{}} />
           <Item onClick={handleCreateNewNote} label="New Page" icon={PlusCircle} />
-          <hr className="h-0.5 bg-neutral-300 dark:bg-neutral-600 mx-2 mt-2"/>
         </div>
+          <hr className="h-0.5 bg-neutral-300 dark:bg-neutral-600 mx-2 mt-2"/>
         <div className="mt-4">
           <DocumentList />
           <Item onClick={handleCreateNewNote} icon={Plus} label="Add a page" />
