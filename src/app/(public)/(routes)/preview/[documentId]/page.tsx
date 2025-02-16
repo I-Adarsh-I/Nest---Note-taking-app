@@ -1,17 +1,21 @@
 "use client";
 
-import CoverImage from "@/components/cover-image";
-import Toolbar from "@/components/toolbar";
-import { Skeleton } from "@/components/ui/skeleton";
-import { api } from "../../../../../../convex/_generated/api";
-import { Id } from "../../../../../../convex/_generated/dataModel";
-import { useMutation, useQuery } from "convex/react";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { useParams } from "next/navigation";
+import { useUser } from "@clerk/clerk-react";
+
+import CoverImage from "@/components/cover-image";
+import Toolbar from "@/components/toolbar";
+import { Skeleton } from "@/components/ui/skeleton";
+
+import { useMutation, useQuery } from "convex/react";
+import { api } from "../../../../../../convex/_generated/api";
+import { Id } from "../../../../../../convex/_generated/dataModel";
 
 const DocumentIdPage = () => {
   const params = useParams();
+  const { user } = useUser();
 
   const Editor = useMemo(
     () => dynamic(() => import("@/components/editor"), { ssr: false }),
@@ -25,6 +29,11 @@ const DocumentIdPage = () => {
   const update = useMutation(api.documents.update);
 
   const onChange = (content: string) => {
+    if(!user){
+      console.log("User not authenticated. Update blocked.");
+      return;
+    }
+
     update({ id: params.documentId as Id<"documents">, content: content });
   };
 
@@ -54,7 +63,7 @@ const DocumentIdPage = () => {
       <div className="md:max-w-3xl lg:max-w-4xl mx-auto h-full">
         <Toolbar preview initialData={document} />
         <Editor
-          editable={false}
+          editable={!!user}
           onChange={onChange}
           initialContent={document.content}
         />

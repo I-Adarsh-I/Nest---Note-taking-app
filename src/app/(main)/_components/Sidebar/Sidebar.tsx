@@ -32,6 +32,8 @@ import UserOptions from "../UserSettings/UserOptions";
 import { DocumentList } from "../DocumentList/DocumentList";
 import TrashCan from "../TrashCan/TrashCan";
 import Navbar from "../NoteNavbar/Navbar";
+import { Logo } from "@/components/logo";
+import Appearance from "../AppearanceSettings/Appearance";
 
 const AppSidebar = () => {
   const search = useSearch();
@@ -157,14 +159,17 @@ const AppSidebar = () => {
           role="button"
           onClick={collapseSidbar}
           className={cn(
-            "h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:bg-neutral-600 absolute top-3 right-2 opacity-0 group-hover/sidebar:opacity-100 transition",
+            "h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:bg-neutral-600 absolute top-5 right-2 opacity-0 group-hover/sidebar:opacity-100 transition",
             isSmallDevice && "opacity-100"
           )}
         >
           <ChevronsLeft className="h-6 w-6" />
         </div>
         <div>
-          <UserOptions />
+          <div className="py-2">
+          <Appearance />
+          </div>
+          {/* <UserOptions /> */}
           <Item
             label="Search"
             icon={Search}
@@ -173,6 +178,7 @@ const AppSidebar = () => {
           />
           <Item label="Settings" icon={Settings} onClick={() =>{}} />
           <Item onClick={handleCreateNewNote} label="New Page" icon={PlusCircle} />
+          <hr className="h-0.5 bg-neutral-300 dark:bg-neutral-600 mx-2 mt-2"/>
         </div>
         <div className="mt-4">
           <DocumentList />
@@ -188,6 +194,9 @@ const AppSidebar = () => {
               <TrashCan />
             </PopoverContent>
           </Popover>
+        </div>
+        <div className="absolute flex bottom-2 w-full overflow-x-clip">
+          <UserOptions />
         </div>
         {/* To resize the sidebar */}
         <div

@@ -229,12 +229,12 @@ export const deleteNote = mutation({
 
     const document = await ctx.db.delete(args.id);
 
-    return document
+    return document;
   },
 });
 
 export const getSearch = query({
-  handler: async(ctx) => {
+  handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
 
     if (!identity) {
@@ -245,59 +245,65 @@ export const getSearch = query({
     }
     const userId = identity.subject;
 
-    const documents = ctx.db.query("documents").withIndex("by_user", (q) => q.eq("userId", userId)).filter((q) => q.eq(q.field("isArchived"), false)).order("desc").collect();
+    const documents = ctx.db
+      .query("documents")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .filter((q) => q.eq(q.field("isArchived"), false))
+      .order("desc")
+      .collect();
 
-    return documents
-  }
+    return documents;
+  },
 });
 
 export const getDocumentById = query({
-  args: { documentId: v.id("documents")},
-  handler: async(ctx, args) => {
+  args: { documentId: v.id("documents") },
+  handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
+    const document = await ctx.db.get(args.documentId);
 
     if (!identity) {
+      if (document?.isPublished && !document.isArchived) {
+        return document;
+      }
       throw new ConvexError({
         message: "User not authenticated",
         code: 400,
       });
     }
 
-    const userId = identity.subject;
+    const userId = identity?.subject;
 
-    const document = await ctx.db.get(args.documentId);
-
-    if(!document){
-      // console.log("Document", document)
-      throw new ConvexError({
-        message: "No documents found",
-        code: 404,
-      });
+    if (!document) {
+      console.log("No document exists with specified docId");
+      return document
+      // throw new ConvexError({
+      //   message: "No documents found",
+      //   code: 404,
+      // });
     }
 
-    if(!document.isArchived && document.isPublished){
-      return document;
-    };
-
-    if(document.userId !== userId){
+    if (document.userId !== userId) {
       throw new ConvexError({
         message: "User not authorized",
-        code: 400
+        code: 400,
       });
     }
 
-    return document
-  }
-})
+    return document;
+  },
+});
 
 export const update = mutation({
-  args: {  id: v.id("documents"),
+  args: {
+    id: v.id("documents"),
     title: v.optional(v.string()),
     content: v.optional(v.string()),
     coverImage: v.optional(v.string()),
     icon: v.optional(v.string()),
-    isPublished: v.optional(v.boolean()),},
-  handler: async(ctx, args) => {
+    isPublished: v.optional(v.boolean()),
+  },
+  handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
 
     if (!identity) {
@@ -323,7 +329,7 @@ export const update = mutation({
     if (existingDocument.userId !== userId) {
       throw new ConvexError({
         message: "User not authorized",
-        code: 400
+        code: 400,
       });
     }
 
@@ -331,11 +337,11 @@ export const update = mutation({
 
     return document;
   },
-})
+});
 
 export const removeIcon = mutation({
-  args: {documentId: v.id("documents")},
-  handler: async(ctx, args) => {
+  args: { documentId: v.id("documents") },
+  handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
 
     if (!identity) {
@@ -359,9 +365,8 @@ export const removeIcon = mutation({
     const document = await ctx.db.patch(args.documentId, { icon: undefined });
 
     return document;
-
-  }
-})
+  },
+});
 
 export const removeCoverImage = mutation({
   args: { id: v.id("documents") },

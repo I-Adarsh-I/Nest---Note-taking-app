@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
@@ -10,6 +10,7 @@ import { FileIcon } from "lucide-react";
 import { Doc, Id } from "../../../../../convex/_generated/dataModel";
 import { api } from "../../../../../convex/_generated/api";
 import Item from "../Item/Item";
+import { Spinner } from "@/components/loader";
 
 interface DocumentListProps {
     parentDocumentId?: Id<"documents">;
@@ -23,6 +24,7 @@ interface DocumentListProps {
   }: DocumentListProps) => {
     const params = useParams();
     const router = useRouter();
+
     const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   
     const onExpand = (documentId: string) => {
@@ -57,7 +59,7 @@ interface DocumentListProps {
     }
   
     return (
-      <>
+      <div className="max-h-[400px] overflow-auto">
         {/* This paragraph will be rendered if it is the last element in the document tree */}
         <p
           style={{ paddingLeft: level ? `${level * 12 + 25}px` : undefined }}
@@ -87,7 +89,7 @@ interface DocumentListProps {
             )}
           </div>
         ))}
-      </>
+      </div>
     );
   };
 

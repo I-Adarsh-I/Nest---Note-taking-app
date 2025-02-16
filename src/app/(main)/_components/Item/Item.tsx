@@ -5,6 +5,7 @@ import { useUser } from "@clerk/clerk-react";
 import {
   ChevronDown,
   ChevronRight,
+  FilePenLine,
   LucideIcon,
   MoreHorizontal,
   Plus,
@@ -26,6 +27,9 @@ import { cn } from "@/lib/utils";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { api } from "../../../../../convex/_generated/api";
 import { SearchCommand } from "@/components/Modals/SearchCommand";
+import React, { useRef, useState } from "react";
+import { Input } from "@/components/ui/input";
+import Title from "../NoteTitle/Title";
 
 interface ItemProps {
   id?: Id<"documents">;
@@ -57,9 +61,14 @@ const Item = ({
   const router = useRouter();
   const { user } = useUser();
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [newTitle, setNewTitle] = useState(label || "Untitled Note");
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const createNewNote = useMutation(api.documents.create);
   const archiveNote = useMutation(api.documents.archive);
   const restoreNote = useMutation(api.documents.restoreNotes);
+  const rename = useMutation(api.documents.update);
 
   const onArhive = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
@@ -94,7 +103,7 @@ const Item = ({
       if (!isExpanded) {
         onExpand?.();
       }
-      router.push(`/documents/${documentId}`)
+      router.push(`/documents/${documentId}`);
     });
     toast.promise(newNoteCreated, {
       loading: "Creating a new note",
@@ -114,6 +123,33 @@ const Item = ({
       success: "Note restored",
       error: "Failed to restore note",
     });
+  };
+
+  const enableInput = () => {
+    setNewTitle(label);
+    setIsEditing(true);
+    setTimeout(() => {
+      inputRef.current?.focus();
+      inputRef.current?.setSelectionRange(0, inputRef.current.value.length);
+    }, 0);
+  };
+
+  const disableInput = () => {
+    setIsEditing(false);
+  };
+
+  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTitle(event.target.value);
+    rename({
+      id: id as Id<"documents">,
+      title: event.target.value || "Untitled Note",
+    });
+  };
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" || event.key === "Escape") {
+      disableInput();
+    }
   };
 
   const CheveronIcon = isExpanded ? ChevronDown : ChevronRight;
@@ -145,13 +181,32 @@ const Item = ({
       ) : (
         <Icon className="shrink-0 h-[18px] w-[18px] mr-2 text-muted-foreground" />
       )}
-      <span className="truncate">{label}</span>
+      {isEditing ? (
+        <>
+          <Input
+            ref={inputRef}
+            onClick={enableInput}
+            onBlur={disableInput}
+            onChange={onChangeHandler}
+            onKeyDown={onKeyDown}
+            value={newTitle}
+            className="h-7 px-2 focus-visible:ring-transparent"
+          />
+        </>
+      ) : (
+        <>
+          <span className="truncate">
+            {label}
+          </span>
+        </>
+      )}
+      {/* <span className="truncate">{label}</span> */}
       {isSearch && (
         <>
-        <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[14px] font-medium text-muted-foreground opacity-100 text-center">
-          <span className="text-[11px] mt-[1px]">⌘</span>K
-        </kbd>
-        <SearchCommand />
+          <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[14px] font-medium text-muted-foreground opacity-100 text-center">
+            <span className="text-[11px] mt-[1px]">⌘</span>K
+          </kbd>
+          <SearchCommand />
         </>
       )}
       {!!id && (
@@ -171,9 +226,13 @@ const Item = ({
               side="right"
               forceMount
             >
-              <DropdownMenuItem onClick={(e) => onArhive(e)}>
+              <DropdownMenuItem onClick={onArhive}>
                 <Trash className="h-4 w-4 mr-2" />
                 Delete
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={enableInput}>
+                <FilePenLine className="h-4 w-4 mr-2" />
+                Rename
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <div className="text-xs text-muted-foreground p-2">

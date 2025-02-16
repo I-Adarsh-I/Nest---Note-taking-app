@@ -38,18 +38,18 @@ const Navbar = () => {
           >
             <div className="hidden md:flex items-center gap-x-2">
               <Image
-                src="/nest-icon-black.svg"
+                src="/nest-icon-dark.svg"
                 height={40}
                 width={40}
                 alt="Logo"
-                className="dark:hidden"
+                className="dark:hidden pointer-events-none"
               />
               <Image
-                src="/nest-icon-white.svg"
+                src="/nest-icon.svg"
                 height={40}
                 width={40}
                 alt="Logo"
-                className="hidden dark:block"
+                className="hidden dark:block pointer-events-none"
               />
               <p className={cn("font-semibold", font.className)}>Nest</p>
             </div>
