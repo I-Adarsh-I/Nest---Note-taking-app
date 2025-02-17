@@ -39,7 +39,9 @@ interface ItemProps {
   onExpand?: () => void;
   label: string;
   onClick?: () => void;
+  aiButton?: boolean;
   icon: LucideIcon;
+  altIcon?: string;
 }
 
 // ⌘
@@ -55,6 +57,8 @@ const Item = ({
   level = 0,
   isSearch,
   onExpand,
+  aiButton,
+  altIcon,
 }: ItemProps) => {
   const router = useRouter();
   const { user } = useUser();
@@ -160,8 +164,10 @@ const Item = ({
         paddingLeft: level ? `${level * 12 + 12}px` : "12px",
       }}
       className={cn(
-        "group min-h-[27px] text-sm py-1 pr-3 w-full hover:bg-primary/5 flex items-center text-muted-foreground font-medium",
-        active && "bg-primary/5 text-primary"
+        `group min-h-[27px] text-sm py-1 pr-3 hover:bg-primary/5 flex items-center text-muted-foreground font-medium`,
+        active && "bg-primary/5 text-primary",
+        aiButton &&
+          "bg-gradient-to-r from-indigo-500/70 via-purple-500/70 to-pink-500/70 p-2 my-2 rounded-sm text-slate-200 mx-2"
       )}
     >
       {!!id && (
@@ -176,6 +182,8 @@ const Item = ({
 
       {documentIcon ? (
         <div className="shrink-0 mr-2 text-[18px]">{documentIcon}</div>
+      ) : altIcon ? (
+        <span className="pr-2 ml-[-6px]">{altIcon}</span>
       ) : (
         <Icon className="shrink-0 h-[18px] w-[18px] mr-2 text-muted-foreground" />
       )}
@@ -193,9 +201,7 @@ const Item = ({
         </>
       ) : (
         <>
-          <span className="truncate">
-            {label}
-          </span>
+          <span className="truncate">{label}</span>
         </>
       )}
       {/* <span className="truncate">{label}</span> */}

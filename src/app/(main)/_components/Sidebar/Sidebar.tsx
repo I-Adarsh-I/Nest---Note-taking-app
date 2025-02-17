@@ -175,7 +175,7 @@ const AppSidebar = () => {
             isSearch
             onClick={search.onOpen}
           />
-          <Item label="Settings" icon={Settings} onClick={() =>{}} />
+          <Item aiButton={true} label="Ask AI" icon={Settings} altIcon={"✨"} onClick={() =>{}} />
           <Item onClick={handleCreateNewNote} label="New Page" icon={PlusCircle} />
         </div>
           <hr className="h-0.5 bg-neutral-300 dark:bg-neutral-600 mx-2 mt-2"/>

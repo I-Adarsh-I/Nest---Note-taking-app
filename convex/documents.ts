@@ -1,6 +1,8 @@
-import { mutation, query } from "./_generated/server";
+import { action, mutation, query } from "./_generated/server";
 import { Doc, Id } from "./_generated/dataModel";
 import { ConvexError, v } from "convex/values";
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import { generateText } from "ai"
 
 export const create = mutation({
   args: {
@@ -394,3 +396,26 @@ export const removeCoverImage = mutation({
     return document;
   },
 });
+
+export const generateAiResponse = action({
+  args: { prompt: v.optional(v.string())},
+  handler: async(ctx, args) => {
+    const google = createGoogleGenerativeAI({
+      // custom settings
+      apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY
+    });
+
+    const model = google('gemini-1.5-flash', {
+      safetySettings: [
+        { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_LOW_AND_ABOVE' },
+        { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_LOW_AND_ABOVE' },
+      ],
+    });
+
+    const response = await generateText({
+      model: model,
+      prompt: "Write delicious recipie of making latte"
+    });
+    return response.text;
+  }
+})
