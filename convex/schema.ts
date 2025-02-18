@@ -18,17 +18,19 @@ export default defineSchema({
     .index("by_user_parent",["userId", "parentDocument"]),
 
     //Table for AI chat messages
-    messags: defineTable({
+    messages: defineTable({
         sessionId: v.id("sessions"),
         userId: v.string(),
         prompt: v.optional(v.string()),
         role: v.string(), // to set based on AI and user
         timestamp: v.string(),
-    }),
+    })
+    .index("sessionId", ["sessionId"]),
 
     //Table for storing chat sessions
     sessions: defineTable({
         userId: v.string(),
+        sesssionName: v.string(),
         sessionStart: v.string(),
         sessionEnd: v.optional(v.string()),
         isActive: v.boolean(),
