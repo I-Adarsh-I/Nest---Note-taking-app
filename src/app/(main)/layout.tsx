@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import AppSidebar from "./_components/Sidebar/Sidebar";
 
 import { Spinner } from "@/components/loader";
+import { SearchCommand } from "@/components/Modals/SearchCommand";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useConvexAuth();
@@ -25,6 +26,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="dark:bg-dark h-full flex" suppressHydrationWarning>
       <AppSidebar />
       <main className="h-full flex-1 overflow-y-auto px-4 lg:px-0">
+        <SearchCommand />
         {children}
       </main>
     </div>

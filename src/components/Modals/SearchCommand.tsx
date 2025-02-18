@@ -51,7 +51,8 @@ export const SearchCommand = () => {
   };
 
   if (!isMounted) return null;
-
+  // const safeDocuments = Array.isArray(documents) ? documents : [];
+  
   return (
     <CommandDialog open={isOpen} onOpenChange={(open) => {
       if (!open) onClose();
