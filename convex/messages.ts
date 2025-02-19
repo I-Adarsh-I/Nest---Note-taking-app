@@ -5,20 +5,22 @@ import { generateText } from "ai";
 import { internal } from "./_generated/api";
 
 export const createNewSession = mutation({
-  args: { userId: v.string(), sessionName: v.optional(v.string()) },
+  args: { sessionName: v.optional(v.string()) },
   handler: async (ctx, args) => {
-    const { userId } = args;
+    const identity = await ctx.auth.getUserIdentity();
 
-    if (!userId) {
+    if (!identity) {
       throw new ConvexError({
-        message: "User ID is required to create a new session",
-        code: 404,
+        message: "User not authenticated",
+        code: 400,
       });
     }
+
+    const userId = identity.subject;
     const session = await ctx.db.insert("sessions", {
       userId: userId,
       sessionStart: new Date().toISOString(),
-      sesssionName: args.sessionName ? args.sessionName : "Untitled Chat",
+      sessionName: args.sessionName ? args.sessionName : "Untitled Chat",
       isActive: true,
     });
     return session;
@@ -28,16 +30,15 @@ export const createNewSession = mutation({
 export const getSearch = query({
   args: { userId: v.string() },
   handler: async (ctx, args) => {
-    const { userId } = args;
+    const identity = await ctx.auth.getUserIdentity();
 
-    if (!userId) {
-      if (!userId) {
-        throw new ConvexError({
-          message: "User ID is required to create a new session",
-          code: 404,
-        });
-      }
+    if (!identity) {
+      throw new ConvexError({
+        message: "User not authenticated",
+        code: 400,
+      });
     }
+    const userId = identity.subject;
     const sessions = await ctx.db
       .query("sessions")
       .withIndex("by_user", (q) => q.eq("userId", userId))
@@ -48,50 +49,80 @@ export const getSearch = query({
   },
 });
 
-export const getMessagesBySession = query({
-  args: {sessionId: v.id("sessions"), userId: v.string()},
+export const getSessionById = query({
+  args: { sessionId: v.id("sessions") },
   handler: async (ctx, args) => {
     const { sessionId } = args;
+    const identity = await ctx.auth.getUserIdentity();
 
-    if(!sessionId){
+    if (!identity) {
       throw new ConvexError({
-        message:"Session ID required to search a session",
-        code: 400 
-      })
+        message: "User not authenticated",
+        code: 400,
+      });
+    }
+    const userId = identity.subject;
+
+    if (!sessionId) {
+      throw new ConvexError({
+        message: "Session ID required to search a session",
+        code: 400,
+      });
     }
     const session = await ctx.db.get(args.sessionId);
 
-    if(!session){
+    if (!session) {
       console.log("No session exists with provided sessionID");
       return session;
     }
-    if(session.userId !== args.userId){
+    if (session.userId !== userId) {
       throw new ConvexError({
         message: "User not authenticated!",
-        code: 400
-      })
+        code: 400,
+      });
     }
 
     return session;
-  }
-})
+  },
+});
+
+export const getAllChats = query({
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError({
+        message: "User not authenticated",
+        code: 400,
+      });
+    }
+    const userId = identity.subject;
+    const sessions = await ctx.db
+      .query("sessions")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .filter((q) => q.eq(q.field("isActive"), true))
+      .order("desc")
+      .collect();
+
+    return sessions;
+  },
+});
 
 export const deleteSession = mutation({
-  args: { sessionId: v.id("sessions"), userId: v.string() },
+  args: { id: v.id("sessions")  },
   handler: async (ctx, args) => {
-    const { userId } = args;
+    const identity = await ctx.auth.getUserIdentity();
 
-    if (!userId) {
-      if (!userId) {
-        throw new ConvexError({
-          message: "User ID is required to create a new session",
-          code: 404,
-        });
-      }
+    if (!identity) {
+      throw new ConvexError({
+        message: "User not authenticated",
+        code: 400,
+      });
     }
-
-    const existingSession = await ctx.db.get(args.sessionId);
-    if(!existingSession){
+    const userId = identity.subject;
+    
+    const existingSession = await ctx.db.get(args.id);
+    if (!existingSession) {
       throw new ConvexError({
         message: "Session does not exist",
         code: 401,
@@ -105,8 +136,52 @@ export const deleteSession = mutation({
       });
     }
 
-    await ctx.db.delete(args.sessionId);
+    await ctx.db.delete(args.id);
     return { message: "Session deleted successfully" };
+  },
+});
+
+export const update = mutation({
+  args: {
+    id: v.id("sessions"),
+    sessionName: v.optional(v.string()),
+    sessionStart: v.optional(v.string()),
+    sessionEnd: v.optional(v.string()),
+    isActive: v.optional(v.boolean()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError({
+        message: "User not authenticated",
+        code: 400,
+      });
+    }
+
+    const userId = identity.subject;
+
+    const { id, ...rest } = args;
+
+    const existingChat = await ctx.db.get(args.id);
+
+    if (!existingChat) {
+      throw new ConvexError({
+        message: "No chat session found",
+        code: 404,
+      });
+    }
+
+    if (existingChat.userId !== userId) {
+      throw new ConvexError({
+        message: "User not authorized",
+        code: 400,
+      });
+    }
+
+    const chatSession = await ctx.db.patch(args.id, { ...rest });
+
+    return chatSession;
   },
 });
 
@@ -139,24 +214,39 @@ export const deleteSession = mutation({
 //   },
 // });
 
-
 export const generateAiResponse = action({
-  args: { sessionId: v.id("sessions"), userId: v.string(), prompt: v.optional(v.string()) },
+  args: { sessionId: v.id("sessions"), prompt: v.optional(v.string()) },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError({
+        message: "User not authenticated",
+        code: 400,
+      });
+    }
+    const userId = identity.subject;
+
     const google = createGoogleGenerativeAI({
       apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
     });
 
     const model = google("gemini-1.5-flash", {
       safetySettings: [
-        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_LOW_AND_ABOVE" },
-        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
+        {
+          category: "HARM_CATEGORY_HATE_SPEECH",
+          threshold: "BLOCK_LOW_AND_ABOVE",
+        },
+        {
+          category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          threshold: "BLOCK_LOW_AND_ABOVE",
+        },
       ],
     });
 
     await ctx.runMutation(internal.messages.saveMessage, {
       sessionId: args.sessionId,
-      userId: args.userId,
+      userId: userId,
       prompt: args.prompt,
       role: "user",
     });
@@ -168,12 +258,15 @@ export const generateAiResponse = action({
     });
 
     // Save AI's response
-    const aiMessage: any = await ctx.runMutation(internal.messages.saveMessage, {
-      sessionId: args.sessionId,
-      userId: args.userId,
-      prompt: response.text,
-      role: "ai",
-    });
+    const aiMessage: any = await ctx.runMutation(
+      internal.messages.saveMessage,
+      {
+        sessionId: args.sessionId,
+        userId: userId,
+        prompt: response.text,
+        role: "ai",
+      }
+    );
 
     return aiMessage;
   },

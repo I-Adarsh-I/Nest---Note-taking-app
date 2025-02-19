@@ -30,8 +30,8 @@ export default defineSchema({
     //Table for storing chat sessions
     sessions: defineTable({
         userId: v.string(),
-        sesssionName: v.string(),
-        sessionStart: v.string(),
+        sessionName: v.string(),
+        sessionStart: v.optional(v.string()),
         sessionEnd: v.optional(v.string()),
         isActive: v.boolean(),
     })
