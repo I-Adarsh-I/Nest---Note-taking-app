@@ -1,0 +1,16 @@
+{
+  "id": "/",
+  "name": "Nest - Note taking app",
+  "short_name": "Nest",
+  "theme_color": "#ffffff",
+  "background_color": "#000000",
+  "display": "standalone",
+  "orientation": "natural",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    { "src": "/nest-icon-dark-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "/nest-icon-dark-256.png", "type": "image/png", "sizes": "256x256" },
+    { "src": "/nest-icon-dark-512.png", "type": "image/png", "sizes": "512x512" }
+  ]
+}
