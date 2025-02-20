@@ -17,6 +17,8 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: "Nest",
   description: "A home for all your notes",
+  manifest: "/manifest.json",
+  keywords: ["nextjs", "notes-app", "nest", "nest-notes-app", "notion", "miro"],
   icons: {
     icon: [
       {
@@ -31,6 +33,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  authors: [
+    {
+      name: "Adarsh Singh",
+      url: "https://github.com/I-Adarsh-I",
+    },
+  ],
 };
 
 export default function RootLayout({
