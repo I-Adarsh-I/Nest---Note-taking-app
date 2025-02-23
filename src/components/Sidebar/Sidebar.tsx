@@ -118,17 +118,9 @@ const AppSidebar = () => {
       setTimeout(() => setIsResetting(false), 300);
     }
   };
-  useEffect(() => {
-    console.log("Sidebar Ref:", sidebarRef.current);
-  }, []);
-
+  
   const collapseSidbar = () => {
-    console.log("clicked!");
-    console.log(sidebarRef.current, navbarRef.current);
-    console.log(pathname.startsWith("/chat/"));
-
     if (sidebarRef.current && navbarRef.current) {
-      console.log("clicked inside!");
       setIsCollapsed(true);
       setIsResetting(true);
 

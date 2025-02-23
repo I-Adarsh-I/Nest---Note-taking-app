@@ -289,18 +289,20 @@ export const generateAiResponse = action({
       prompt: args.prompt,
     });
 
+    const aiResponse = response.text?.trim() || "I am not sure How to respond";
+
     // Save AI's response
     const aiMessage: any = await ctx.runMutation(
       internal.messages.saveMessage,
       {
         sessionId: args.sessionId,
         userId: userId,
-        prompt: response.text,
+        prompt: aiResponse,
         role: "ai",
       }
     );
 
-    return aiMessage;
+    return { prompt: aiResponse };
   },
 });
 

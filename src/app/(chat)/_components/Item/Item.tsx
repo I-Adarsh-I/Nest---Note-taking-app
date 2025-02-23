@@ -63,7 +63,7 @@ const Item = ({
     if (!id) return;
     deleteSession({ id });
 
-    toast.success("Note moved to trash");
+    toast.success("Chat deleted");
   };
 
   const enableInput = () => {

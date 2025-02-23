@@ -59,6 +59,7 @@ const ChatSidebar = () => {
   }, [isSmallDevice]);
 
   useEffect(() => {
+    console.log("is small screen size", isSmallDevice);
     if (isSmallDevice) {
       collapseSidebar();
     }
@@ -112,8 +113,8 @@ const ChatSidebar = () => {
       setIsResetting(true);
 
       chatSidebarRef.current.style.width = "0";
-      chatNavbarRef.current.style.setProperty("width", "calc(100% - 15rem)");
-      chatNavbarRef.current.style.setProperty("left", "240px");
+      chatNavbarRef.current.style.setProperty("width", isSmallDevice ? "100%" : "calc(100% - 15rem)");
+      chatNavbarRef.current.style.setProperty("left", isSmallDevice ? "0" : "240px");
       setTimeout(() => setIsResetting(false), 300);
     }
   };
@@ -150,7 +151,7 @@ const ChatSidebar = () => {
       <aside
         ref={chatSidebarRef}
         className={cn(
-          "group/chatSidebar h-full overflow-y-auto relative flex w-96 flex-col z-[99999] border-r border-black/20 shadow-[8px_0_16px_-4px_rgba(0,0,0,0.2)]",
+          "group/chatSidebar h-full overflow-y-auto absolute md:relative bg-secondary md:bg-transparent flex w-96 flex-col z-[99999] border-r border-black/20 shadow-[8px_0_16px_-4px_rgba(0,0,0,0.2)]",
           isResetting && "transition-all ease-in-out duration-300",
           isSmallDevice && "w-0"
         )}
