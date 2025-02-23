@@ -28,8 +28,7 @@ export const createNewSession = mutation({
 });
 
 export const getSearch = query({
-  args: { userId: v.string() },
-  handler: async (ctx, args) => {
+  handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
 
     if (!identity) {
@@ -45,6 +44,39 @@ export const getSearch = query({
       .filter((q) => q.eq(q.field("isActive"), true))
       .order("desc")
       .collect();
+    return sessions;
+  },
+});
+
+export const getSearchByTerm = query({
+  args: { query: v.optional(v.string()) }, // Accepts an optional search string
+  handler: async (ctx, { query }) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError({
+        message: "User not authenticated",
+        code: 400,
+      });
+    }
+
+    const userId = identity.subject;
+
+    let sessions = await ctx.db
+      .query("sessions")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .filter((q) => q.eq(q.field("isActive"), true))
+      .order("desc")
+      .collect();
+
+    // If a search query is provided, filter results
+    if (query) {
+      const lowerCaseQuery = query.toLowerCase();
+      sessions = sessions.filter((session) =>
+        session.sessionName.toLowerCase().includes(lowerCaseQuery)
+      );
+    }
+
     return sessions;
   },
 });

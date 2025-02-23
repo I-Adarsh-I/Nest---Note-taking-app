@@ -1,45 +1,58 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { toast } from "sonner";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { cn } from "@/lib/utils";
 
-import { ChevronsLeft, PanelLeft, PlusIcon } from "lucide-react";
+import {
+  ChevronsLeft,
+  MessageSquareText,
+  PanelLeft,
+  PlusIcon,
+} from "lucide-react";
 
 import { api } from "../../../convex/_generated/api";
 
 import Navbar from "@/app/(chat)/_components/ChatNavbar/Navbar";
 import { Input } from "../ui/input";
 import { ChatList } from "@/app/(chat)/_components/ChatList/ChatList";
+import Item from "@/app/(chat)/_components/Item/Item";
 
 const ChatSidebar = () => {
+  const router = useRouter();
   const params = useParams();
   const pathname = usePathname();
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
 
+  const [searchTerm, setSearchTerm] = useState("");
   const isResizingRef = useRef(false);
   const chatSidebarRef = useRef<HTMLElement | null>(null);
   const chatNavbarRef = useRef<HTMLDivElement>(null);
 
   const [isResetting, setIsResetting] = useState(false);
-  const [chatbarIsCollapsed, setChatbarIsCollapsed] = useState(true);
+  const [isChatbarCollapsed, setIsChatbarCollapsed] = useState(true);
 
   const createNewSession = useMutation(api.messages.createNewSession);
+  const getChatSessions = useQuery(api.messages.getSearchByTerm, {
+    query: searchTerm,
+  });
 
   useEffect(() => {
     // Collapse sidebar if not on /chat route
     if (pathname !== "/chat/[sessionId]") {
-      setChatbarIsCollapsed(true);
+      setIsChatbarCollapsed(true);
     }
   }, [pathname]);
 
   useEffect(() => {
     if (isSmallDevice) {
-      collapseSidbar();
+      collapseSidebar();
+    } else if (pathname.startsWith("/chat/")) {
+      collapseSidebar();
     } else {
       resetWidth();
     }
@@ -47,7 +60,7 @@ const ChatSidebar = () => {
 
   useEffect(() => {
     if (isSmallDevice) {
-      collapseSidbar();
+      collapseSidebar();
     }
   }, [isSmallDevice, pathname]);
 
@@ -77,7 +90,7 @@ const ChatSidebar = () => {
 
   const resetWidth = () => {
     if (chatSidebarRef.current && chatNavbarRef.current) {
-      setChatbarIsCollapsed(false);
+      setIsChatbarCollapsed(false);
       setIsResetting(true);
 
       chatSidebarRef.current.style.width = isSmallDevice ? "100%" : "320px";
@@ -93,9 +106,9 @@ const ChatSidebar = () => {
     }
   };
 
-  const collapseSidbar = () => {
+  const collapseSidebar = () => {
     if (chatSidebarRef.current && chatNavbarRef.current) {
-      setChatbarIsCollapsed(true);
+      setIsChatbarCollapsed(true);
       setIsResetting(true);
 
       chatSidebarRef.current.style.width = "0";
@@ -119,7 +132,20 @@ const ChatSidebar = () => {
     }
   };
 
-  return pathname.startsWith("/chat/") ? (
+  const onRedirect = (sessionId: string) => {
+    collapseSidebar();
+    router.push(`/chat/${sessionId}`);
+  };
+
+  useEffect(() => {
+    if (pathname.startsWith("/chat/")) {
+      collapseSidebar();
+    } else {
+      resetWidth();
+    }
+  }, [pathname]);
+  
+  return pathname.startsWith("/chat") ? (
     <>
       <aside
         ref={chatSidebarRef}
@@ -135,7 +161,7 @@ const ChatSidebar = () => {
             <div className="flex gap-2 item-center">
               <div
                 role="button"
-                onClick={collapseSidbar}
+                onClick={collapseSidebar}
                 className={cn(
                   "h-5 w-5 text-muted-foreground rounded-sm hover:bg-neutral-300 hover:dark:bg-neutral-600 opacity-0 group-hover/chatSidebar:opacity-100 transition",
                   isSmallDevice && "opacity-100"
@@ -143,7 +169,11 @@ const ChatSidebar = () => {
               >
                 <ChevronsLeft className="h-5 w-5" />
               </div>
-              <div role="button" onClick={handleCreateNewChat} className="h-5 w-5 text-muted-foreground rounded-sm hover:bg-neutral-300 hover:dark:bg-neutral-600 cursor-pointer">
+              <div
+                role="button"
+                onClick={handleCreateNewChat}
+                className="h-5 w-5 text-muted-foreground rounded-sm hover:bg-neutral-300 hover:dark:bg-neutral-600 cursor-pointer"
+              >
                 <PlusIcon className="h-5 w-5" />
               </div>
             </div>
@@ -152,10 +182,28 @@ const ChatSidebar = () => {
             type="search"
             placeholder="Search or start a new chat"
             className="border border-muted-foreground ring-0 focus-visible:ring-0 outline-none"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <div className="px-2 mt-5">
-        <ChatList />
+          {searchTerm ? (
+            <div>
+              {getChatSessions?.map((chat) => (
+                <div key={chat._id} className="p-2 border-b">
+                  <Item
+                    id={chat._id}
+                    label={chat.sessionName}
+                    icon={MessageSquareText}
+                    onClick={() => onRedirect(chat._id)}
+                    active={params.sessionId === chat._id}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <ChatList />
+          )}
         </div>
       </aside>
       {/* Navbar */}
@@ -170,14 +218,14 @@ const ChatSidebar = () => {
         {!!params.sessionId ? (
           <>
             <Navbar
-              isCollapsed={chatbarIsCollapsed}
+              isCollapsed={isChatbarCollapsed}
               onResetWidth={() => resetWidth()}
             />
           </>
         ) : (
           <nav className="bg-transparent px-3 py-2 w-full">
             {/* If the sidebar is collapsed, show the menu icon to let the user reopen the sidebar */}
-            {chatbarIsCollapsed && (
+            {isChatbarCollapsed && (
               <PanelLeft
                 onClick={resetWidth}
                 role="button"

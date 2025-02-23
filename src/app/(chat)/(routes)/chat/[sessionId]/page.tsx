@@ -6,7 +6,7 @@ const sessionIdPage = () => {
   }
 
   return (
-      <div className="max-w-full">
+      <div className="max-w-full mt-10">
         Chat page
       </div>
   );

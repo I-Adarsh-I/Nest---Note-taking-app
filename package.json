@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ai-sdk/google": "^1.1.14",
+    "@ai-sdk/google": "^1.1.16",
     "@blocknote/core": "^0.23.6",
     "@blocknote/mantine": "^0.23.6",
     "@blocknote/react": "^0.23.6",
@@ -37,7 +37,7 @@
     "@tiptap/starter-kit": "^2.11.5",
     "@uidotdev/usehooks": "^2.4.1",
     "@y-sweet/react": "^0.8.2",
-    "ai": "^4.1.41",
+    "ai": "^4.1.44",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { cn } from "@/lib/utils";
@@ -36,6 +36,7 @@ import Appearance from "../../app/(main)/_components/AppearanceSettings/Appearan
 import ChatSidebar from "./ChatSidebar";
 
 const AppSidebar = () => {
+  const router = useRouter();
   const search = useSearch();
   const params = useParams();
   const pathname = usePathname();
@@ -192,7 +193,7 @@ const AppSidebar = () => {
               label="Ask AI"
               icon={Settings}
               altIcon={"✨"}
-              onClick={() => {}}
+              onClick={() => router.push("/chat")}
             />
             <Item
               onClick={handleCreateNewNote}

@@ -1,17 +1,16 @@
-import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+"use client"
+
+import MessageList from "../../_components/MessageList/MessageList";
+import { ChatInput } from "../../_components/ChatInput/ChatInput";
 
 const ChatPage = () => {
     return ( 
         <>
-      <div className="h-full flex flex-col items-center justify-center space-y-4">
-        <h2 className="text-lg font-medium">
-          Welcome to nest chat
-        </h2>
-        <Button>
-          <PlusCircle className="h-4 w-4 mr-2" />
-          Create a chat
-        </Button>
+      <div className="h-full flex flex-col items-center justify-center">
+      <div className="flex flex-col gap-2 h-full w-full my-4 mt-12 justify-center items-center">
+            <MessageList />
+            <ChatInput onSendMessage={() => {}}/>
+        </div>
       </div>
     </>
      );

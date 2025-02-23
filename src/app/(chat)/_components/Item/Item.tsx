@@ -6,7 +6,6 @@ import {
   FilePenLine,
   LucideIcon,
   MoreHorizontal,
-  Plus,
   Trash,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -55,7 +54,6 @@ const Item = ({
   const [newTitle, setNewTitle] = useState(label || "Untitled Note");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const createNewChatSession = useMutation(api.messages.createNewSession);
   const deleteSession = useMutation(api.messages.deleteSession);
   const rename = useMutation(api.messages.update);
 
@@ -67,28 +65,6 @@ const Item = ({
 
     toast.success("Note moved to trash");
   };
-
-//   const onCreateNewNote = (
-//     event: React.MouseEvent<HTMLDivElement, MouseEvent>
-//   ) => {
-//     event.stopPropagation();
-//     if (!id) return;
-//     const newNoteCreated = createNewNote({
-//       title: "Untitled Note",
-//       parentDocument: id,
-//     }).then((documentId) => {
-//       if (!isExpanded) {
-//         onExpand?.();
-//       }
-//       router.push(`/documents/${documentId}`);
-//     });
-//     toast.promise(newNoteCreated, {
-//       loading: "Creating a new note",
-//       success: "New note created",
-//       error: "Failed to create a new note",
-//     });
-//   };
-
 
   const enableInput = () => {
     setNewTitle(label);
@@ -122,7 +98,7 @@ const Item = ({
       onClick={onClick}
       role="button"
       className={cn(
-        `group min-h-[27px] text-sm p-3 hover:bg-primary/5 flex items-center text-muted-foreground font-normal rounded-sm`,
+        `group min-h-[27px] text-sm p-3 hover:bg-primary/5 flex items-center text-muted-foreground font-normal rounded-sm mb-1`,
         active && "bg-primary/5 text-primary",
       )}
     >
@@ -181,23 +157,16 @@ const Item = ({
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
-          <div
-            role="button"
-            className="opacity-0 group-hover:opacity-100 h-full ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600"
-            // onClick={(event) => onCreateNewNote(event)}
-          >
-            <Plus className="h-4 w-4 text-muted-foreground" />
-          </div>
         </div>
       )}
     </div>
   );
 };
 
-Item.skeleton = function ItemSkeleton({ level }: { level?: number }) {
+Item.skeleton = function ItemSkeleton() {
   return (
     <div
-      style={{ paddingLeft: level ? `${level * 12 + 25}px` : "12px" }}
+      style={{ paddingLeft: "12px" }}
       className="flex gap-x-2 py-[3px]"
     >
       <Skeleton className="h-4 w-4" />
