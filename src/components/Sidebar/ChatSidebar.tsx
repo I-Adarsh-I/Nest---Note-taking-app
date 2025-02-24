@@ -9,6 +9,7 @@ import { useMediaQuery } from "@uidotdev/usehooks";
 import { cn } from "@/lib/utils";
 
 import {
+  ArrowLeft,
   ChevronsLeft,
   MessageSquareText,
   PanelLeft,
@@ -21,6 +22,7 @@ import Navbar from "@/app/(chat)/_components/ChatNavbar/Navbar";
 import { Input } from "../ui/input";
 import { ChatList } from "@/app/(chat)/_components/ChatList/ChatList";
 import Item from "@/app/(chat)/_components/Item/Item";
+import { Button } from "../ui/button";
 
 const ChatSidebar = () => {
   const router = useRouter();
@@ -59,7 +61,6 @@ const ChatSidebar = () => {
   }, [isSmallDevice]);
 
   useEffect(() => {
-    console.log("is small screen size", isSmallDevice);
     if (isSmallDevice) {
       collapseSidebar();
     }
@@ -158,7 +159,7 @@ const ChatSidebar = () => {
       >
         <div className="px-2">
           <div className="py-2 flex item-center justify-between">
-            <p>Nest AI</p>
+            <p>Nest AI ✨</p>
             <div className="flex gap-2 item-center">
               <div
                 role="button"
@@ -205,6 +206,11 @@ const ChatSidebar = () => {
           ) : (
             <ChatList />
           )}
+        </div>
+        <div className="w-full absolute bottom-2 flex md:hidden items-center justify-center">
+          <Button variant={"ghost"} size={"sm"} className="w-11/12" onClick={() => router.push("/documents")}>
+            <ArrowLeft /> Back to Nest Notes
+          </Button>
         </div>
       </aside>
       {/* Navbar */}

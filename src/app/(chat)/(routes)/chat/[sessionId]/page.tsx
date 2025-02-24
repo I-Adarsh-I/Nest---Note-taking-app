@@ -1,15 +1,16 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAction, useQuery } from "convex/react";
 
 import { ChatInput } from "@/app/(chat)/_components/ChatInput/ChatInput";
 import MessageList from "@/app/(chat)/_components/MessageList/MessageList";
 
+import { Spinner } from "@/components/loader";
+
 import { api } from "../../../../../../convex/_generated/api";
 import { Id } from "../../../../../../convex/_generated/dataModel";
-import { useParams } from "next/navigation";
-import { Spinner } from "@/components/loader";
 
 const sessionIdPage = () => {
   const params = useParams();
@@ -23,6 +24,7 @@ const sessionIdPage = () => {
     sessionId: sessionId as Id<"sessions">,
   });
 
+  //send message to AI
   const handleSendMessage = async (message: string) => {
     setMessages((prev) => [...prev, { role: "user", prompt: message }]);
 

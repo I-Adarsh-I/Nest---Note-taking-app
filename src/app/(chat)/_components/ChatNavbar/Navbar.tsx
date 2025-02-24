@@ -1,5 +1,5 @@
 import { useQuery } from "convex/react";
-import { Ellipsis, MessageSquareText, PanelLeft, SquarePen } from "lucide-react";
+import { MessageSquareText, PanelLeft, SquarePen } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
 import { api } from "../../../../../convex/_generated/api";
@@ -57,8 +57,8 @@ const Navbar = ({ isCollapsed, onResetWidth }: NavbarProps) => {
         <div className="flex items-center gap-2">
           <Button variant={"ghost"}><SquarePen className="w-5 h-5"/></Button>
           <div role="button" className="mt-1">
-            <Ellipsis className="w-5 h-5"/>
-            {/* <Options documentId={document._id} /> */}
+            {/* <Ellipsis className="w-5 h-5"/> */}
+            <Options sessionId={session._id} />
           </div>
         </div>
       </nav>

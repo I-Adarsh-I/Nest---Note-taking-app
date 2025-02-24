@@ -14,7 +14,7 @@ interface Message {
   prompt: string;
 }
 interface MessageListProps {
-  messages: Message[];
+  messages?: Message[];
 }
 
 const MessageList = ({ messages }: MessageListProps) => {
@@ -52,14 +52,14 @@ const MessageList = ({ messages }: MessageListProps) => {
       {(messages?.length === 0 || !messages) ? (
         <>
           <div className="flex flex-col items-center justify-center">
-            <h1 className="text-3xl text-center text-zinc-900/80 dark:text-white/65">
+            <h1 className="text-2xl md:text-3xl text-center text-zinc-900/80 dark:text-white/65">
               Hi, {user?.fullName}
             </h1>
-            <h3 className="text-3xl text-center">
+            <h3 className="text-2xl md:text-3xl text-center">
               Can I Help you with anything?
             </h3>
           </div>
-          <div className="flex gap-4 items-center">
+          <div className="flex flex-wrap gap-4 items-center justify-center">
             {predefinedPrompts.map((prompt) => (
               <div key={prompt.id}>
                 <PromptItem

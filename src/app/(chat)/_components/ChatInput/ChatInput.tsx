@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ArrowUp } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -21,11 +20,12 @@ export const ChatInput = ({ onSendMessage }: ChatInputProps) => {
   };
 
   return (
-    <div className="flex items-end justify-center gap-2 w-full max-w-[600px] h-max fixed bottom-3 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-3xl">
+    <>
+    <div className="flex items-end justify-center gap-2 w-11/12 md:w-full max-w-[600px] h-max fixed bottom-3 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-3xl">
       <Textarea
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        className="w-full max-h-[120px] overflow-y-auto ring-0 rounded-3xl focus-visible:ring-0 placeholder:text-muted-foreground p-2 resize-none"
+        className="w-full max-h-[120px] overflow-y-auto ring-0 rounded-3xl focus-visible:ring-0 placeholder:text-muted-foreground p-2 resize-none pt-2.5"
         placeholder="Ask anything..."
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
@@ -42,5 +42,6 @@ export const ChatInput = ({ onSendMessage }: ChatInputProps) => {
         <ArrowUp className="h-4 w-4" />
       </Button>
     </div>
+    </>
   );
 };

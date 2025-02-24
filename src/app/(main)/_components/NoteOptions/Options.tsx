@@ -11,19 +11,35 @@ import { Ellipsis, Trash } from "lucide-react";
 import { api } from "../../../../../convex/_generated/api";
 import { toast } from "sonner";
 import { Id } from "../../../../../convex/_generated/dataModel";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface OptionsProps {
-  documentId: Id<"documents">;
+  documentId?: Id<"documents">;
+  sessionId?: Id<"sessions">;
 }
 
-const Options = ({ documentId }: OptionsProps) => {
+const Options = ({ documentId, sessionId }: OptionsProps) => {
   const { user } = useUser();
   const router = useRouter();
+  const pathname = usePathname();
 
+  //Note functionalities
   const archiveNote = useMutation(api.documents.archive);
   const restoreNote = useMutation(api.documents.restoreNotes);
+
+  //Chat functionalities
+  const deleteSession = useMutation(api.messages.deleteSession);
+
+  const deleteChat = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.stopPropagation();
+
+    if (!sessionId) return;
+    deleteSession({ id: sessionId });
+
+    router.push("/chat");
+    toast.success("Chat deleted successfully");
+  };
 
   const onArhive = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
@@ -53,7 +69,7 @@ const Options = ({ documentId }: OptionsProps) => {
       error: "Failed to restore note",
     });
 
-    router.push(`/documents/${documentId}`)
+    router.push(`/documents/${documentId}`);
   };
 
   return (
@@ -62,14 +78,25 @@ const Options = ({ documentId }: OptionsProps) => {
         <Ellipsis className="h-5 w-5" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={(e) => onArhive(e)}>
+        <DropdownMenuItem
+        className="cursor-pointer"
+          onClick={
+            !pathname.startsWith("/chat/")
+              ? (e) => onArhive(e)
+              : (e) => deleteChat(e)
+          }
+        >
           <Trash className="h-4 w-4" />
           Delete
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <div className="text-xs text-muted-foreground p-2">
-          Last edited by: {user?.fullName}
-        </div>
+        {!pathname.startsWith("/chat/") && (
+          <>
+            <DropdownMenuSeparator />
+            <div className="text-xs text-muted-foreground p-2">
+              Last edited by: {user?.fullName}
+            </div>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

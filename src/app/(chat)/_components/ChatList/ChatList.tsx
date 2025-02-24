@@ -35,7 +35,7 @@ export const ChatList = () => {
 
   return (
     <>
-      <div className="max-h-[100px] overflow-auto">
+      <div className="max-h-[650px] lg:max-h-[635px] overflow-auto">
         {chatSessions.map((session) => (
           <div key={session._id}>
             <Item
