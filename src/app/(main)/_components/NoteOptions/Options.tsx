@@ -1,3 +1,9 @@
+import { useUser } from "@clerk/clerk-react";
+import { useMutation } from "convex/react";
+import { Ellipsis, Trash } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -5,14 +11,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useUser } from "@clerk/clerk-react";
-import { useMutation } from "convex/react";
-import { Ellipsis, Trash } from "lucide-react";
-import { api } from "../../../../../convex/_generated/api";
-import { toast } from "sonner";
-import { Id } from "../../../../../convex/_generated/dataModel";
-import { usePathname, useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
+
+import { Id } from "../../../../../convex/_generated/dataModel";
+import { api } from "../../../../../convex/_generated/api";
 
 interface OptionsProps {
   documentId?: Id<"documents">;
@@ -35,10 +37,14 @@ const Options = ({ documentId, sessionId }: OptionsProps) => {
     event.stopPropagation();
 
     if (!sessionId) return;
-    deleteSession({ id: sessionId });
+    const deletedSession = deleteSession({ id: sessionId });
+    toast.promise(deletedSession,{
+      loading: "Deleting Chat session",
+      success: "Chat deleted successfully",
+      error: "We are experiecing huge traffic volume please try deleting session after some time"
+    });
 
     router.push("/chat");
-    toast.success("Chat deleted successfully");
   };
 
   const onArhive = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

@@ -6,8 +6,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { PromptItem } from "../Item/PromptItem";
-import { useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 interface Message {
   role: "user" | "ai";
@@ -19,11 +18,11 @@ interface MessageListProps {
 
 const MessageList = ({ messages }: MessageListProps) => {
   const { user } = useUser();
-  const pathname = usePathname();
+
   const messageEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messageEndRef.current?.scrollIntoView({behavior: "smooth"})
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const predefinedPrompts = [
@@ -49,7 +48,7 @@ const MessageList = ({ messages }: MessageListProps) => {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center gap-4">
-      {(messages?.length === 0 || !messages) ? (
+      {messages?.length === 0 || !messages ? (
         <>
           <div className="flex flex-col items-center justify-center">
             <h1 className="text-2xl md:text-3xl text-center text-zinc-900/80 dark:text-white/65">
@@ -78,7 +77,9 @@ const MessageList = ({ messages }: MessageListProps) => {
               <div
                 key={index}
                 className={`flex my-2 ${
-                  msg.role === "user" ? "justify-end" : "flex-col justify-start mb-5"
+                  msg.role === "user"
+                    ? "justify-end"
+                    : "flex-col justify-start mb-5"
                 }`}
               >
                 <div
@@ -140,14 +141,16 @@ const MessageList = ({ messages }: MessageListProps) => {
                       code: ({ node, ...props }) => (
                         <code
                           className={` px-2 py-0.5 rounded-md font-mono text-sm ${
-                            msg.role === "user" ? "" : "bg-slate-300 dark:bg-slate-700 text-black/80 dark:text-white/80"
+                            msg.role === "user"
+                              ? ""
+                              : "bg-slate-300 dark:bg-slate-700 text-black/80 dark:text-white/80"
                           }`}
                           {...props}
                         />
                       ),
                       pre: ({ node, ...props }) => (
                         <pre
-                          className="bg-gray-100 dark:bg-black/60 p-3 rounded-md overflow-x-auto text-sm my-3"
+                          className="bg-gray-100 dark:bg-black/60 p-3 rounded-md overflow-x-auto text-sm my-3 hover:outline outline-[1px]"
                           {...props}
                         />
                       ),
@@ -188,7 +191,7 @@ const MessageList = ({ messages }: MessageListProps) => {
                 </div>
               </div>
             ))}
-          <div ref={messageEndRef} />
+            <div ref={messageEndRef} />
           </div>
         </>
       )}

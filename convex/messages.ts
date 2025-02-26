@@ -141,7 +141,7 @@ export const getAllChats = query({
 });
 
 export const deleteSession = mutation({
-  args: { id: v.id("sessions")  },
+  args: { id: v.id("sessions") },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
 
@@ -152,7 +152,7 @@ export const deleteSession = mutation({
       });
     }
     const userId = identity.subject;
-    
+
     const existingSession = await ctx.db.get(args.id);
     if (!existingSession) {
       throw new ConvexError({
@@ -166,6 +166,16 @@ export const deleteSession = mutation({
         message: "User not authorized to perform this action",
         code: 401,
       });
+    }
+
+    //delete all messages associated with a particular chat session
+    const messages = await ctx.db
+      .query("messages")
+      .withIndex("sessionId", (q) => q.eq("sessionId", args.id))
+      .collect();
+
+    for (const message of messages) {
+      await ctx.db.delete(message._id);
     }
 
     await ctx.db.delete(args.id);
@@ -216,35 +226,6 @@ export const update = mutation({
     return chatSession;
   },
 });
-
-// export const generateAiResponse = action({
-//   args: { prompt: v.optional(v.string()) },
-//   handler: async (ctx, args) => {
-//     const google = createGoogleGenerativeAI({
-//       // custom settings
-//       apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
-//     });
-
-//     const model = google("gemini-1.5-flash", {
-//       safetySettings: [
-//         {
-//           category: "HARM_CATEGORY_HATE_SPEECH",
-//           threshold: "BLOCK_LOW_AND_ABOVE",
-//         },
-//         {
-//           category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-//           threshold: "BLOCK_LOW_AND_ABOVE",
-//         },
-//       ],
-//     });
-
-//     const response = await generateText({
-//       model: model,
-//       prompt: args.prompt,
-//     });
-//     return response.text;
-//   },
-// });
 
 export const generateAiResponse = action({
   args: { sessionId: v.id("sessions"), prompt: v.optional(v.string()) },
