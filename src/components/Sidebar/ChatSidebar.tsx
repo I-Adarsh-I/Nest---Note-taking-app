@@ -84,12 +84,6 @@ const ChatSidebar = () => {
     }
   };
 
-  const handleMouseUp = () => {
-    isResizingRef.current = false;
-    document.removeEventListener("mousemove", handleMouseMove);
-    document.removeEventListener("mouseup", handleMouseUp);
-  };
-
   const resetWidth = () => {
     if (chatSidebarRef.current && chatNavbarRef.current) {
       setIsChatbarCollapsed(false);
