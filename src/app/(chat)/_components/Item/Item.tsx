@@ -47,7 +47,6 @@ const Item = ({
   active,
   altIcon,
 }: ItemProps) => {
-  const router = useRouter();
   const { user } = useUser();
 
   const [isEditing, setIsEditing] = useState(false);

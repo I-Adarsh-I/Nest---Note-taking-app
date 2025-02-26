@@ -8,12 +8,6 @@ const Textarea = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const textAreaRef = React.useRef<HTMLTextAreaElement | null>(null);
 
-  // Auto-grow logic
-  const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const target = event.target;
-    target.style.height = "auto";
-    target.style.height = `${Math.min(target.scrollHeight, 120)}px`;
-  };
   return (
     <textarea
       className={cn(

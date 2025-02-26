@@ -13,7 +13,7 @@ const ChatPage = () => {
 
   const createNewChatSession = useMutation(api.messages.createNewSession);
 
-  const onCreateNewSession = async (message: string) => {
+  const onCreateNewSession = async () => {
     try {
       const newSession = createNewChatSession({ sessionName: "Untitled Chat" });
       toast.promise(newSession, {
