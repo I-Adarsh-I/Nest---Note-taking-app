@@ -244,8 +244,6 @@ export const generateAiResponse = action({
       apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
     });
 
-    console.log("AI API key- ", process.env.GOOGLE_GENERATIVE_AI_API_KEY);
-
     const model = google("gemini-1.5-flash", {
       safetySettings: [
         {
