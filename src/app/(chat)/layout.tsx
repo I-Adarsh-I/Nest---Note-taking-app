@@ -2,12 +2,12 @@
 
 import { useConvexAuth } from "convex/react";
 import { redirect } from "next/navigation";
-import AppSidebar from "../../components/Sidebar/Sidebar";
 
 import { Spinner } from "@/components/loader";
+import AppSidebar from "@/components/Sidebar/Sidebar";
 import { SearchCommand } from "@/components/Modals/SearchCommand";
 
-const MainLayout = ({ children }: { children: React.ReactNode }) => {
+const ChatLayout = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useConvexAuth();
 
   if (isLoading) {
@@ -21,11 +21,11 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   if (!isAuthenticated) {
     redirect("/");
   }
-  
+
   return (
-    <div className="dark:bg-dark h-full flex" suppressHydrationWarning>
+    <div className="dark:bg-dark h-full w-full flex" suppressHydrationWarning>
       <AppSidebar />
-      <main className="h-full flex-1 overflow-y-auto px-4 lg:px-0">
+      <main className="h-full flex-1 overflow-y-auto">
         <SearchCommand />
         {children}
       </main>
@@ -33,4 +33,4 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default MainLayout;
+export default ChatLayout;

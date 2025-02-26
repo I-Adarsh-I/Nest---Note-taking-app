@@ -1,13 +1,15 @@
 import { useRef, useState } from "react";
+import { useMutation } from "convex/react";
+
 import { ImageIcon, Smile, X } from "lucide-react";
 import TextareaAutosize from "react-textarea-autosize";
 
-import { Doc } from "../../convex/_generated/dataModel";
-
 import { IconPicker } from "./icon-picker";
 import { Button } from "./ui/button";
-import { useMutation } from "convex/react";
+
+import { Doc } from "../../convex/_generated/dataModel";
 import { api } from "../../convex/_generated/api";
+
 import { useCoverImage } from "@/hooks/use-cover-image";
 
 interface ToolbarProps {
