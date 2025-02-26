@@ -66,24 +66,6 @@ const ChatSidebar = () => {
     }
   }, [isSmallDevice, pathname]);
 
-  const handleMouseMove = (event: MouseEvent) => {
-    if (!isResizingRef.current) return; // if isResizingRef is false, break the function
-    let newWidth = event.clientX; // get the width
-
-    if (newWidth < 240) newWidth = 240; // minimum width limit
-    if (newWidth > 480) newWidth = 480; // maximum width limit
-
-    // if chatSidebarRef and chatNavbarRef are active
-    if (chatSidebarRef.current && chatNavbarRef.current) {
-      chatSidebarRef.current.style.width = `${newWidth}px`; // set the sidebar width
-      chatNavbarRef.current.style.setProperty("left", `${newWidth}px`); // reposition the navbar
-      chatNavbarRef.current.style.setProperty(
-        "width",
-        `calc(100% - ${newWidth}px)`
-      ); // recalculate the navbar width
-    }
-  };
-
   const resetWidth = () => {
     if (chatSidebarRef.current && chatNavbarRef.current) {
       setIsChatbarCollapsed(false);
