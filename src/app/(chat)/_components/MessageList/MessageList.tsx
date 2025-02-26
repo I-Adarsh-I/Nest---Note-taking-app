@@ -6,7 +6,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { PromptItem } from "../Item/PromptItem";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 interface Message {
   role: "user" | "ai";
@@ -92,19 +92,19 @@ const MessageList = ({ messages }: MessageListProps) => {
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     components={{
-                      strong: ({ node, ...props }) => (
+                      strong: ({ ...props }) => (
                         <strong
                           className="tracking-wider font-medium text-gray-900 dark:text-gray-100"
                           {...props}
                         />
                       ),
-                      em: ({ node, ...props }) => (
+                      em: ({ ...props }) => (
                         <em
                           className="italic text-gray-700 dark:text-gray-300"
                           {...props}
                         />
                       ),
-                      p: ({ node, ...props }) => (
+                      p: ({ ...props }) => (
                         <p
                           className={`${
                             msg.role === "user"
@@ -114,31 +114,31 @@ const MessageList = ({ messages }: MessageListProps) => {
                           {...props}
                         />
                       ),
-                      ul: ({ node, ...props }) => (
+                      ul: ({ ...props }) => (
                         <ul
                           className="list-disc ml-2 md:ml-6 space-y-1 flex flex-col"
                           {...props}
                         />
                       ),
-                      ol: ({ node, ...props }) => (
+                      ol: ({ ...props }) => (
                         <ol
                           className="list-decimal ml-6 space-y-1 flex flex-col"
                           {...props}
                         />
                       ),
-                      li: ({ node, ...props }) => (
+                      li: ({ ...props }) => (
                         <li
                           className="ml-4 text-gray-800 dark:text-gray-300"
                           {...props}
                         />
                       ),
-                      blockquote: ({ node, ...props }) => (
+                      blockquote: ({ ...props }) => (
                         <blockquote
                           className="border-l-4 border-gray-400 pl-4 italic text-gray-600 dark:text-gray-300"
                           {...props}
                         />
                       ),
-                      code: ({ node, ...props }) => (
+                      code: ({ ...props }) => (
                         <code
                           className={` px-2 py-0.5 rounded-md font-mono text-sm ${
                             msg.role === "user"
@@ -148,37 +148,37 @@ const MessageList = ({ messages }: MessageListProps) => {
                           {...props}
                         />
                       ),
-                      pre: ({ node, ...props }) => (
+                      pre: ({ ...props }) => (
                         <pre
                           className="bg-gray-100 dark:bg-black/60 p-3 rounded-md overflow-x-auto text-sm my-3 hover:outline outline-[1px]"
                           {...props}
                         />
                       ),
-                      h1: ({ node, ...props }) => (
+                      h1: ({ ...props }) => (
                         <h1
                           className="text-2xl font-bold mt-4 text-gray-900 dark:text-gray-100"
                           {...props}
                         />
                       ),
-                      h2: ({ node, ...props }) => (
+                      h2: ({ ...props }) => (
                         <h2
                           className="text-xl font-semibold mt-3 text-gray-900 dark:text-gray-200"
                           {...props}
                         />
                       ),
-                      h3: ({ node, ...props }) => (
+                      h3: ({ ...props }) => (
                         <h3
                           className="text-lg font-semibold mt-2 text-gray-800 dark:text-gray-300"
                           {...props}
                         />
                       ),
-                      h4: ({ node, ...props }) => (
+                      h4: ({ ...props }) => (
                         <h4
                           className="text-md font-medium mt-2 text-gray-700 dark:text-gray-300"
                           {...props}
                         />
                       ),
-                      a: ({ node, ...props }) => (
+                      a: ({ ...props }) => (
                         <a
                           className="text-blue-600 dark:text-blue-400 underline"
                           {...props}

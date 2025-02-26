@@ -31,7 +31,7 @@ const LoadingAnimation = () => {
   );
 };
 
-const sessionIdPage = () => {
+const SessionIdPage = () => {
   const params = useParams();
   const [messages, setMessages] = useState<{ role: string; prompt: string }[]>(
     []
@@ -103,4 +103,4 @@ const sessionIdPage = () => {
   );
 };
 
-export default sessionIdPage;
+export default SessionIdPage;
