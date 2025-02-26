@@ -38,7 +38,8 @@ export const DocumentList = ({
   });
 
   const onRedirect = (documentId: string) => {
-    router.push(`/documents/${documentId}`);
+    router.prefetch(`/documents/${documentId}`);
+    router.replace(`/documents/${documentId}`);
   };
 
   // In convex, the query will only result in undefined if it is loading
@@ -93,6 +94,3 @@ export const DocumentList = ({
     </>
   );
 };
-
-// div className="max-h-[400px] overflow-auto"
-// div
