@@ -31,7 +31,6 @@ const ChatSidebar = () => {
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
 
   const [searchTerm, setSearchTerm] = useState("");
-  const isResizingRef = useRef(false);
   const chatSidebarRef = useRef<HTMLElement | null>(null);
   const chatNavbarRef = useRef<HTMLDivElement>(null);
 

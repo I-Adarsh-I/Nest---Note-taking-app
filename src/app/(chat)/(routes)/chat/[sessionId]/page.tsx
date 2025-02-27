@@ -16,7 +16,7 @@ const LoadingAnimation = () => {
   const dotColors = ["bg-blue-400", "bg-green-400", "bg-yellow-400", "bg-red-400"];
 
   return (
-    <div className="absolute bottom-14 w-[550px] flex items-center justify-start space-x-1 text-xs font-normal mt-2">
+    <div className="absolute bottom-14 w-[320px] md:w-[550px] flex items-center justify-start space-x-1 text-xs font-normal mt-2">
       <span>Thinking</span>
       <div className="flex space-x-0.5">
         {[...Array(4)].map((_, i) => (
