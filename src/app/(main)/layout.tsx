@@ -25,7 +25,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="dark:bg-dark h-full flex" suppressHydrationWarning>
       <AppSidebar />
-      <main className="h-full flex-1 overflow-y-auto px-4 lg:px-0">
+      <main className="h-full flex-1 overflow-y-auto">
         <SearchCommand />
         {children}
       </main>
