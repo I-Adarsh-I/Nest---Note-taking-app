@@ -147,7 +147,7 @@ const AppSidebar = () => {
 
   return (
     <>
-      <div className="flex">
+      <div className={`flex ${!isCollapsed && isSmallDevice && "w-full"}`}>
         <aside
           ref={sidebarRef}
           className={cn(

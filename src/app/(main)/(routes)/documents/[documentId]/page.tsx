@@ -57,7 +57,7 @@ const DocumentIdPage = () => {
   return (
     <div className="pb-40">
       <CoverImage url={document.coverImage} />
-      <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
+      <div className="md:max-w-3xl lg:max-w-4xl mx-auto px-4 xl:px-0">
         <Toolbar initialData={document} />
         <Editor
           onChange={onChangeNoteContent}
