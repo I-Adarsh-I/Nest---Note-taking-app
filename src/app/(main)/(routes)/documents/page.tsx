@@ -8,10 +8,12 @@ import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { api } from "../../../../../convex/_generated/api";
 import { ConvexError } from "convex/values";
+import { useGreet } from "@/hooks/use-greet";
 
 const DocumentPage = () => {
   const { user } = useUser();
-  // console.log({ user });
+  
+  const greet = useGreet();
 
   const create = useMutation(api.documents.create);
 
@@ -35,8 +37,8 @@ const DocumentPage = () => {
   return (
     <>
       <div className="h-full flex flex-col items-center justify-center space-y-4">
-        <h2 className="text-lg font-medium">
-          Welcome to {user?.firstName}&apos;s Nest
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium md:font-normal">
+          {greet}, {user?.firstName}
         </h2>
         <Button onClick={() => createNewNote()}>
           <PlusCircle className="h-4 w-4 mr-2" />
