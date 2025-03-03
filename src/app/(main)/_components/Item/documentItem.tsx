@@ -4,17 +4,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { LucideIcon } from "lucide-react";
 
 interface DocumentItemProps {
-  id?: Id<"documents">;
+  // id?: Id<"documents">;
   documentIcon?: string;
   coverimgUrl?: string;
   label: string;
   altIcon?: LucideIcon;
-  // lastOpened?: Date;
   onClick?: () => void;
 }
 
 const DocumentItem = ({
-  id,
+  // id,
   documentIcon,
   coverimgUrl,
   label,
