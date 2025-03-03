@@ -26,6 +26,7 @@ export const create = mutation({
       userId,
       isArchived: false,
       isPublished: false,
+      lastVisited: undefined,
     });
 
     return document;
@@ -58,6 +59,73 @@ export const getAllDocuments = query({
       .collect();
 
     return documents;
+  },
+});
+
+export const recentlyVisited = query({
+  args: { limit: v.optional(v.number()) },
+  handler: async (ctx, args) => {
+    const { limit = 10 } = args;
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError({
+        message: "User not authenticated",
+        code: 400,
+      });
+    }
+
+    const userId = identity.subject;
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();;
+
+    const documents = await ctx.db
+      .query("documents")
+      .withIndex("by_user_lastVisited", (q) =>
+        q.eq("userId", userId).gte("lastVisited", thirtyDaysAgo)
+      )
+      .order("desc")
+      .take(limit);
+
+    return documents;
+  },
+});
+
+export const updateLastVisited = mutation({
+  args: { documentId: v.id("documents") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError({
+        message: "User not authenticated",
+        code: 400,
+      });
+    }
+
+    const userId = identity.subject;
+
+    const document = await ctx.db.get(args.documentId);
+
+    if (!document) {
+      throw new ConvexError({
+        message: "Document not found",
+        code: 404,
+      });
+    }
+
+    if (document.userId !== userId) {
+      throw new ConvexError({
+        message: "User not authorized",
+        code: 400,
+      });
+    }
+
+    // Update lastVisited timestamp
+    await ctx.db.patch(args.documentId, {
+      lastVisited: new Date().toISOString(),
+    });
+
+    return { success: true, lastVisited: new Date().toISOString() };
   },
 });
 
@@ -290,6 +358,7 @@ export const getDocumentById = query({
         code: 400,
       });
     }
+
 
     return document;
   },
