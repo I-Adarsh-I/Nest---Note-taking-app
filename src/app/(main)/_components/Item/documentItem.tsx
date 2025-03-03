@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Id } from "../../../../../convex/_generated/dataModel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LucideIcon } from "lucide-react";
 
