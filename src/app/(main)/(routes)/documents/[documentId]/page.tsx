@@ -1,16 +1,16 @@
 "use client";
 
+import dynamic from "next/dynamic";
+import { useEffect, useMemo } from "react";
+import { useParams } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
+
+import Toolbar from "@/components/toolbar";
+import CoverImage from "@/components/cover-image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { api } from "../../../../../../convex/_generated/api";
 import { Id } from "../../../../../../convex/_generated/dataModel";
-import Toolbar from "@/components/toolbar";
-import { useParams } from "next/navigation";
-import CoverImage from "@/components/cover-image";
-import { Skeleton } from "@/components/ui/skeleton";
-// import Editor from "@/components/editor";
-import dynamic from "next/dynamic";
-import { useMemo } from "react";
 
 const DocumentIdPage = () => {
   const Editor = useMemo(
@@ -24,6 +24,7 @@ const DocumentIdPage = () => {
   const document = useQuery(api.documents.getDocumentById, {
     documentId,
   });
+  const updateLastVisited = useMutation(api.documents.updateLastVisited)
 
   const updateNote = useMutation(api.documents.update);
 
@@ -33,6 +34,10 @@ const DocumentIdPage = () => {
       content,
     });
   };
+
+  useEffect(() => {
+    documentId && updateLastVisited({documentId});
+  },[documentId, updateLastVisited])
 
   if (document === null) {
     return <div>Not found</div>;

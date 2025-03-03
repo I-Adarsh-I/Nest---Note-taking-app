@@ -4,12 +4,13 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
-import { cn } from "@/lib/utils";
 import { FileIcon } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import Item from "../Item/Item";
 
 import { Doc, Id } from "../../../../../convex/_generated/dataModel";
 import { api } from "../../../../../convex/_generated/api";
-import Item from "../Item/Item";
 
 interface DocumentListProps {
   parentDocumentId?: Id<"documents">;
@@ -71,7 +72,7 @@ export const DocumentList = ({
       >
         No pages inside
       </p>
-      <div className="max-h-[100px] overflow-auto">
+      <div className="max-h-[300px] md:max-h-[400px] overflow-auto">
       {documents.map((document) => (
         <div key={document._id}>
           <Item
