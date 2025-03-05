@@ -1,16 +1,19 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Poppins } from "next/font/google";
-import { cn } from "@/lib/utils";
-import { ArrowRight, Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useScrollTop } from "@/hooks/scroll-to-top";
-import { useConvexAuth } from "convex/react";
-import { SignInButton, UserButton } from "@clerk/clerk-react";
-import { Spinner } from "@/components/loader";
 import Link from "next/link";
 import Image from "next/image";
+import { useTheme } from "next-themes";
+import { useConvexAuth } from "convex/react";
+import { SignInButton, UserButton } from "@clerk/clerk-react";
+
+import { Poppins } from "next/font/google";
+import { ArrowRight, Moon, Sun } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { useScrollTop } from "@/hooks/scroll-to-top";
+
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/loader";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -25,8 +28,8 @@ const Navbar = () => {
     <>
       <div
         className={cn(
-          "z-50 bg-background dark:bg-dark fixed top-0 w-full min-h-max py-3",
-          scrolled && "border-b shadow-sm"
+          "z-50 bg-transparent fixed top-0 w-full min-h-max py-3",
+          scrolled && "bg-background border-b shadow-sm dark:bg-dark"
         )}
       >
         <div className="flex justify-between px-4">
@@ -36,7 +39,7 @@ const Navbar = () => {
               font.className
             )}
           >
-            <div className="hidden md:flex items-center gap-x-2">
+            <div className="flex items-center gap-x-2">
               <Image
                 src="/nest-icon-dark.svg"
                 height={40}
@@ -51,7 +54,6 @@ const Navbar = () => {
                 alt="Logo"
                 className="hidden dark:block pointer-events-none"
               />
-              <p className={cn("font-semibold", font.className)}>Nest</p>
             </div>
           </div>
           <div className="flex gap-3 items-center">
@@ -64,24 +66,13 @@ const Navbar = () => {
               <>
                 <SignInButton mode="modal">
                   <Button
-                    variant={"ghost"}
-                    className={cn(
-                      "capitalize font-semibold text-sm",
-                      font.className
-                    )}
-                  >
-                    Log In
-                  </Button>
-                </SignInButton>
-                <SignInButton mode="modal">
-                  <Button
                     variant={"default"}
                     className={cn(
                       "capitalize font-semibold text-sm",
                       font.className
                     )}
                   >
-                    Get nest free
+                    Sign In
                   </Button>
                 </SignInButton>
               </>
