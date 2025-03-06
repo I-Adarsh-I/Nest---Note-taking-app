@@ -20,7 +20,7 @@ const DocumentItem = ({
   onClick,
 }: DocumentItemProps) => {
   return (
-    <div role="button" className="h-36 w-36 max-h-56 max-w-56 rounded-xl bg-neutral-300 dark:bg-neutral-700 overflow-hidden flex flex-col items-start justify-between hover:outline outline-1 outline-stone-600 cursor-pointer" onClick={onClick}>
+    <div role="button" className="h-36 w-36 max-h-56 max-w-56 rounded-xl bg-secondary dark:bg-neutral-700 overflow-hidden flex flex-col items-start justify-between hover:outline outline-1 dark:outline-stone-600 cursor-pointer" onClick={onClick}>
       <div className="w-full">
         <div className="relative w-full h-[50px] max-h-[50px]">
           {!!coverimgUrl && (
@@ -39,8 +39,8 @@ const DocumentItem = ({
             : Icon && <Icon className="h-6 w-6 mb-2 text-muted-foreground" />}
         </div>
       </div>
-      <div className="w-full h-full flex p-1">
-        <p className="text-xs md:text-sm text-white/90 line-clamp-2 w-full">
+      <div className="w-full h-full flex p-1.5">
+        <p className="text-xs md:text-sm text-muted-foreground dark:text-white/90 line-clamp-2 max-h-[40px] w-full">
           {label}
         </p>
       </div>

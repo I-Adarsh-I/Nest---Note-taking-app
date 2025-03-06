@@ -1,9 +1,9 @@
 "use client";
 
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { toast } from "sonner";
-import { useParams, usePathname, useRouter } from "next/navigation";
 
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { cn } from "@/lib/utils";
@@ -18,10 +18,10 @@ import {
 
 import { api } from "../../../convex/_generated/api";
 
-import Navbar from "@/app/(chat)/_components/ChatNavbar/Navbar";
-import { Input } from "../ui/input";
 import { ChatList } from "@/app/(chat)/_components/ChatList/ChatList";
+import Navbar from "@/app/(chat)/_components/ChatNavbar/Navbar";
 import Item from "@/app/(chat)/_components/Item/Item";
+import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
 const ChatSidebar = () => {
@@ -182,10 +182,18 @@ const ChatSidebar = () => {
             <ChatList />
           )}
         </div>
-        <div className="w-full absolute bottom-2 flex md:hidden items-center justify-center">
+        <div className="w-full absolute bottom-2 flex flex-col gap-2">
+
+        <div className=" flex md:hidden items-center justify-center">
+          <Button variant={"default"} size={"sm"} className="w-11/12" onClick={handleCreateNewChat}>
+            Create new chat
+          </Button>
+        </div>
+        <div className="flex md:hidden items-center justify-center">
           <Button variant={"ghost"} size={"sm"} className="w-11/12" onClick={() => router.push("/documents")}>
             <ArrowLeft /> Back to Nest Notes
           </Button>
+        </div>
         </div>
       </aside>
       {/* Navbar */}

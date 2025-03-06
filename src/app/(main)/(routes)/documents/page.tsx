@@ -1,10 +1,12 @@
 "use client";
 
-import { useUser } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
-import { Clock, FileIcon, PlusCircle } from "lucide-react";
+
 import { toast } from "sonner";
+import { useUser } from "@clerk/clerk-react";
+
+import { Clock, FileIcon, PlusCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -66,16 +68,17 @@ const DocumentPage = () => {
       recentlyVisitedDocuments.length > 0 &&
       isSmallScreen ? (
         <>
-         <p className={`mb-2 text-muted-foreground text-xs w-full flex items-center justify-center gap-1`}>
-              <Clock className="w-3.5 h-3.5" /> Recently Visited
-            </p>
+          <p
+            className={`mb-2 text-stone-700 dark:text-muted-foreground text-xs w-full flex items-center justify-center gap-1`}
+          >
+            <Clock className="w-3.5 h-3.5" /> Recently Visited
+          </p>
           <div
             className="flex items-center max-w-xs gap-x-4 overflow-x-auto"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            
             {!recentlyVisitedDocuments ? (
-              <div className="flex items-center justify-center gap-4 ml-4">
+              <div className="flex items-center justify-center gap-4 ml-4 max-w-xs overflow-x-auto">
                 <DocumentItem.skeleton />
                 <DocumentItem.skeleton />
                 <DocumentItem.skeleton />
@@ -101,7 +104,7 @@ const DocumentPage = () => {
       ) : (
         <>
           <div>
-            <p className="mb-2 text-muted-foreground text-xs w-full flex items-center gap-1">
+            <p className="mb-2 text-stone-700 dark:text-muted-foreground text-xs w-full flex items-center gap-1">
               <Clock className="w-3.5 h-3.5" /> Recently Visited
             </p>
             <Carousel
@@ -110,11 +113,10 @@ const DocumentPage = () => {
               }}
               className="w-full max-w-2xl"
             >
-              <CarouselContent>
+              <CarouselContent className="px-1">
                 {!recentlyVisitedDocuments ||
                 recentlyVisitedDocuments.length === 0 ? (
                   <div className="flex items-center justify-center gap-4 ml-4">
-                    <DocumentItem.skeleton />
                     <DocumentItem.skeleton />
                     <DocumentItem.skeleton />
                   </div>
