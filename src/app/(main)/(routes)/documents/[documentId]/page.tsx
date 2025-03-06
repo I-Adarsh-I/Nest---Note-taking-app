@@ -36,8 +36,10 @@ const DocumentIdPage = () => {
   };
 
   useEffect(() => {
-    documentId && updateLastVisited({documentId});
-  },[documentId, updateLastVisited])
+    if (documentId) {
+      updateLastVisited({ documentId });
+    }
+  }, [documentId, updateLastVisited]);
 
   if (document === null) {
     return <div>Not found</div>;

@@ -1,5 +1,7 @@
 "use client";
 
+import { useTheme } from "next-themes";
+
 import { SignOutButton, useUser } from "@clerk/clerk-react";
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -11,10 +13,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { ChevronsLeftRight, LogOut } from "lucide-react";
+import { ChevronsLeftRight, LogOut, Moon, Sun } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const UserOptions = () => {
   const { user } = useUser();
+  const { theme, setTheme } = useTheme();
+  
   return (
     <>
       <DropdownMenu>
@@ -44,7 +49,9 @@ const UserOptions = () => {
             <p className="text-xs font-medium leading-none text-muted-foreground">
               {user?.emailAddresses[0].emailAddress}
             </p>
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center justify-between gap-x-2">
+              <div className="flex items-center gap-2">
+
               <div className="rounded-md bg-secondary p-1">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={user?.imageUrl} />
@@ -52,10 +59,22 @@ const UserOptions = () => {
               </div>
               <div className="space-y-1">
                 <p className="text-sm line-clamp-1">
-                  {user?.fullName}&apos;s Notion
+                  {user?.fullName}&apos;s Nest
                 </p>
               </div>
+              </div>
+
+              <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <span className="sr-only">Toggle theme</span>
+            </Button>
             </div>
+            
           </div>
           <DropdownMenuSeparator />
           <DropdownMenuItem
@@ -63,10 +82,11 @@ const UserOptions = () => {
             className="w-full cursor-pointer text-muted-foreground"
           >
             <SignOutButton>
-              <span className="flex items-center justify-between w-full">
+              <div className="flex items-center justify-between w-full">
                 Log Out
               <LogOut />
-              </span>
+              
+              </div>
             </SignOutButton>
           </DropdownMenuItem>
         </DropdownMenuContent>

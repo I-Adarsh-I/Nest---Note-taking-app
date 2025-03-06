@@ -1,12 +1,18 @@
 "use client";
 
-import { FlagTriangleRight, Lightbulb, PencilLine } from "lucide-react";
-import { useUser } from "@clerk/clerk-react";
+import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import { useUser } from "@clerk/clerk-react";
 import remarkGfm from "remark-gfm";
+import { toast } from "sonner";
+import { FlagTriangleRight, Lightbulb, PencilLine, Plus } from "lucide-react";
 
 import { PromptItem } from "../Item/PromptItem";
 import { useEffect, useRef } from "react";
+import { useMutation } from "convex/react";
+
+import { api } from "../../../../../convex/_generated/api";
+import { Button } from "@/components/ui/button";
 
 interface Message {
   role: "user" | "ai";
@@ -18,12 +24,33 @@ interface MessageListProps {
 
 const MessageList = ({ messages }: MessageListProps) => {
   const { user } = useUser();
+  const router = useRouter();
 
   const messageEndRef = useRef<HTMLDivElement>(null);
+
+  const createNewSession = useMutation(api.messages.createNewSession);
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  const handleCreateNewChat = async () => {
+    try {
+      const newChat = createNewSession({ sessionName: "Untitled Chat" });
+      
+      toast.promise(newChat, {
+        loading: "Creating a new chat",
+        success: "New chat created",
+        error: "Unexpected error occured please try again later",
+      });
+
+      const newChatId = await newChat;
+      router.push(`chat/${newChatId}`);
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const predefinedPrompts = [
     {
@@ -69,6 +96,10 @@ const MessageList = ({ messages }: MessageListProps) => {
               </div>
             ))}
           </div>
+          <Button variant={"default"} size={"sm"} onClick={handleCreateNewChat}>
+            Create new chat
+            <Plus className="h-5 w-5" />
+          </Button>
         </>
       ) : (
         <>

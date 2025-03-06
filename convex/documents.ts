@@ -83,6 +83,7 @@ export const recentlyVisited = query({
       .withIndex("by_user_lastVisited", (q) =>
         q.eq("userId", userId).gte("lastVisited", thirtyDaysAgo)
       )
+      .filter((q) => q.eq(q.field("isArchived"), false))
       .order("desc")
       .take(limit);
 
