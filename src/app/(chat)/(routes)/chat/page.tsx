@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "convex/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import MessageList from "../../_components/MessageList/MessageList";
@@ -10,6 +10,7 @@ import { api } from "../../../../../convex/_generated/api";
 
 const ChatPage = () => {
   const router = useRouter();
+  const pathname = usePathname();
 
   const createNewChatSession = useMutation(api.messages.createNewSession);
 
@@ -34,7 +35,9 @@ const ChatPage = () => {
       <div className="h-full flex flex-col items-center justify-center">
         <div className="flex flex-col gap-2 h-full w-full my-4 mt-12 justify-center items-center">
           <MessageList />
+          {pathname.startsWith("/chat/") &&
           <ChatInput onSendMessage={onCreateNewSession} />
+          }
         </div>
       </div>
     </>

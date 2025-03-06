@@ -69,7 +69,7 @@ const DocumentPage = () => {
       isSmallScreen ? (
         <>
           <p
-            className={`mb-2 text-muted-foreground text-xs w-full flex items-center justify-center gap-1`}
+            className={`mb-2 text-stone-700 dark:text-muted-foreground text-xs w-full flex items-center justify-center gap-1`}
           >
             <Clock className="w-3.5 h-3.5" /> Recently Visited
           </p>
@@ -104,7 +104,7 @@ const DocumentPage = () => {
       ) : (
         <>
           <div>
-            <p className="mb-2 text-muted-foreground text-xs w-full flex items-center gap-1">
+            <p className="mb-2 text-stone-700 dark:text-muted-foreground text-xs w-full flex items-center gap-1">
               <Clock className="w-3.5 h-3.5" /> Recently Visited
             </p>
             <Carousel
@@ -113,7 +113,7 @@ const DocumentPage = () => {
               }}
               className="w-full max-w-2xl"
             >
-              <CarouselContent>
+              <CarouselContent className="px-1">
                 {!recentlyVisitedDocuments ||
                 recentlyVisitedDocuments.length === 0 ? (
                   <div className="flex items-center justify-center gap-4 ml-4">

@@ -32,8 +32,9 @@ import UserOptions from "../../app/(main)/_components/UserSettings/UserOptions";
 import { DocumentList } from "../../app/(main)/_components/DocumentList/DocumentList";
 import TrashCan from "../../app/(main)/_components/TrashCan/TrashCan";
 import Navbar from "../../app/(main)/_components/NoteNavbar/Navbar";
-import Appearance from "../../app/(main)/_components/AppearanceSettings/Appearance";
+
 import ChatSidebar from "./ChatSidebar";
+import { Logo } from "../logo";
 
 const AppSidebar = () => {
   const router = useRouter();
@@ -118,7 +119,7 @@ const AppSidebar = () => {
       setTimeout(() => setIsResetting(false), 300);
     }
   };
-  
+
   const collapseSidbar = () => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(true);
@@ -171,7 +172,14 @@ const AppSidebar = () => {
           )}
           <div>
             <div className="py-2">
-              <Appearance />
+              <div
+                role="button"
+                className="flex items-center text-sm p-2 w-full hover:bg-primary/5"
+              >
+                <div className="max-w-[150px]">
+                  <Logo />
+                </div>
+              </div>
             </div>
             {/* <UserOptions /> */}
             <Item

@@ -21,8 +21,8 @@ const font = Poppins({
 });
 const Navbar = () => {
   const { theme, setTheme } = useTheme();
-  const scrolled = useScrollTop();
   const { isLoading, isAuthenticated } = useConvexAuth();
+  const scrolled = useScrollTop();
 
   return (
     <>
