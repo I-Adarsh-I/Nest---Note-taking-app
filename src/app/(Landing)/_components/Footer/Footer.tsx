@@ -29,7 +29,7 @@ const Footer = () => {
             Ready to get started?
           </h3>
           <p className="text-sm md:text-lg text-muted-foreground">
-            Try Nest and it's AI for free
+            Try Nest and it&apos;s AI for free
           </p>
         </div>
         <div className="flex items-center gap-2">
